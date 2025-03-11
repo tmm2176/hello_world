@@ -16,7 +16,7 @@ public class HelloExe {
     	System.out.println("점수는 " + score + "점 입니다");
         // 두 개의 타입이 같도록 변환시켜 주기 때문에 int타입의 변수도 문자열 타입으로 변환시키게 된다.
     	// 즉 +도 문자열을 합치는 기능으로 사용된다.
-    	
+    	System.out.println("수정된 부분");
     	
     } // end of main()
 }

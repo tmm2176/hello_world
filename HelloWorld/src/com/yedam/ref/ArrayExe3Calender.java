@@ -40,7 +40,7 @@ public class ArrayExe3Calender {
 			System.out.print(days[i]);
 		}
 		System.out.println("\n============================");
-		int thisMonth = 12;
+		int thisMonth = 3;
 		int space = getFirstDay(thisMonth); // 1일의 위치값 지정
 		int lastDate = getLastDate(thisMonth); // 마지막 날
 		for (int i = 0; i < space; i++) {
@@ -48,16 +48,26 @@ public class ArrayExe3Calender {
 		}
 	    for(int i = 1 ; i <= lastDate; i++) {
 //	    	방법 1=====================================
-	    	String d = String.format("%4s", i);
-	    	System.out.print(d);
-	    	
+//	    	String d = String.format("%4s", i);
+//	    	if (i == 21) {
+//	    		System.out.print(" 평가");	
+//	    	}
+//	    	else if(i != 21) {
+//	    		System.out.print(d);	    		
+//	    	}
+//	    	
 //	    	방법 1=====================================
 //          방법 2=====================================
-//	    	if(String.valueOf(i).length() == 1) {
-//	    		System.out.print("   " + i);
-//	    	}
-//	    	else if(String.valueOf(i).length() == 2)
-//	    			System.out.print("  " + i);
+	    	if (i == 21) {
+	    		System.out.print(" 평가");
+	    	}
+	    	else if(i != 21) {
+	    		if(String.valueOf(i).length() == 1) {
+	    			System.out.print("   " + i);
+	    		}
+	    		else if(String.valueOf(i).length() == 2)
+	    			System.out.print("  " + i);	    		
+	    	}
 //	    	방법 2=====================================
 //
 //          한 주마다 줄바꿈 (고정 부분)

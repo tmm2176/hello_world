@@ -69,7 +69,6 @@ public class ArrayExe3Calender {
 	    			System.out.print("  " + i);	    		
 	    	}
 //	    	방법 2=====================================
-//
 //          한 주마다 줄바꿈 (고정 부분)
 	    	if ((space + i) % 7 == 0) {
 	    		System.out.println();

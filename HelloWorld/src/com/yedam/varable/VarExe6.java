@@ -55,8 +55,9 @@ public class VarExe6 {
 		System.out.print("조회할 이름 입력>> ");
         String inputName = scn.nextLine();
         int searchScore = 0;
+        int checkMemFlag = 0;
+        
         // 조회이름을 입력 - > 점수 출력
-
 		for(int i = 0; i < members.length; i++) {
 			//		70 ~ 100 사이의 임의값으로 점수지정
 			members[i].setScore((int)(Math.random() * 30) + 70);
@@ -66,6 +67,7 @@ public class VarExe6 {
 //			}
 			if(members[i].getName().equals(inputName)) {
 				searchScore = members[i].getScore();
+				checkMemFlag = 1;
 			}
 //				test code
 			System.out.println("이름 : "+ members[i].getName() +" / 점수 : " + members[i].getScore());
@@ -73,7 +75,11 @@ public class VarExe6 {
 //		점수가 가장 높은 사람의 이름을 출력
 //		System.out.println("\n최고점 : " + maxScoreMem + " "+ maxScore + "점");
 //		입력한 사람의 점수를 출력
-		System.out.println("조회한 이름 : " + inputName + " / 점수 " + " "+ searchScore + "점");
-		System.out.println("git 테스트용 콘솔 출력문");
+		if(checkMemFlag == 1) {
+			System.out.println("조회한 이름 : " + inputName + " / 점수 " + " "+ searchScore + "점");			
+		}
+		else if (checkMemFlag == 0) {
+			System.out.println("해당 이름이 목록에 존재하지 않습니다\n");
+		}
 	} // end of main()
 }

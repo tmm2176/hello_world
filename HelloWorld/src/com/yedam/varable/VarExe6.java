@@ -74,5 +74,6 @@ public class VarExe6 {
 //		System.out.println("\n최고점 : " + maxScoreMem + " "+ maxScore + "점");
 //		입력한 사람의 점수를 출력
 		System.out.println("조회한 이름 : " + inputName + " / 점수 " + " "+ searchScore + "점");
+		System.out.println("git 테스트용 콘솔 출력문");
 	} // end of main()
 }

@@ -293,6 +293,7 @@ public class BookMain {
 		bookStore[0] = new Book("자바" ,"서강중" ,"예담" ,12000, 1);
 		bookStore[1] = new Book("파이썬" ,"이름임" ,"예담" ,14000, 2);
 		bookStore[2] = new Book("나머지" ,"그냥이름" ,"예담" ,15000, 3);	
+		bookStore[3] = new Book("리눅스", "우분투", "추가", 30000, 4);
 	}
 
 }

@@ -132,11 +132,11 @@ public class BookMain {
 					}
 					System.out.print("(수정) 가격>> ");
 					inputPrice = scn.nextLine();
+					price = Integer.parseInt(inputPrice);
 					if(inputPrice.isBlank() == true) {
 						System.out.println("수정 x");
 					}
-					else if(inputPrice.isBlank() == true) {
-						price = Integer.parseInt(inputPrice);
+					else if(inputPrice.isBlank() != true) {
 						bookStore[i].setPrice(price);
 					}
 					
@@ -169,7 +169,7 @@ public class BookMain {
 			if(bookStore[i] != null && bookStore[i].getBookName().equals(bName)) {
 				bookStore[i] = null;
 //				bookStore[i].setBookName("delBookData");;
-				System.out.println("삭제완료\n");
+				System.out.println("삭제완료");
 				isExist = true;
 				break;
 			}
@@ -177,8 +177,9 @@ public class BookMain {
 				isExist = false;
 			}
 		}
+		bookSort();
 		if (isExist == false) {
-			System.out.println("해당 이름이 목록에 존재하지 않습니다\n");
+			System.out.println("해당 이름이 목록에 존재하지 않습니다");
 		}
 	} // end of delFunc()
 	
@@ -196,6 +197,7 @@ public class BookMain {
 		System.out.println();
 	} // end of listFunc()
     
+	// 상세 정보
 	public static void detaileInfo() {
 		boolean isExist = false;
 		String bName = "";
@@ -213,6 +215,34 @@ public class BookMain {
 			System.out.println("입력하신 책을 찾지 못했습니다.\n");
 		}
 	} // end of detaileInfo()
+	
+	// 출판사 출력
+	public static void searchPub() {
+		Book[] pubBookList = new Book[100];
+		String bPublisher = "";
+        int searchBookCount = 0;
+        boolean isExist = false;
+        
+		System.out.print("출판사 명을 입력하세요>> ");
+		bPublisher = scn.nextLine();
+		
+		for(int i = 0; i < bookStore.length; i++) {
+			if(bookStore[i] != null //
+					&& bookStore[i].getPublisher().equals(bPublisher)) {
+				pubBookList[searchBookCount] = bookStore[i];
+				searchBookCount++;
+				isExist = true;
+			}
+		}
+		for(int i = 0; i < searchBookCount; i++) {
+			if(bookStore[i] != null) {
+				pubBookList[i].showBookInfo();				
+			}
+		}
+		if(isExist == false) {
+			System.out.println("입력하신 출판사를 찾지 못했습니다.");
+		}
+	}
     public static void main(String[] args) {
 //		test code
 //		Book book = new Book("이것이 자바다" ,"신용권" ,"한빛미디어" ,20000 );
@@ -223,7 +253,7 @@ public class BookMain {
 		init();
 		boolean run = true;	
 		while(run) {
-		    System.out.println("1. 도서등록 | 2. 수정 | 3. 삭제 | 4. 목록 | 5. 상세 조회 | 0. 종료");
+		    System.out.println("\n1. 도서등록 | 2. 수정 | 3. 삭제 | 4. 목록 | 5. 상세 조회 | 6. 출판사 조회 | 0. 종료");
 		    System.out.print("선택 >> ");
 		    int menu = Integer.parseInt(scn.nextLine());
 //		    String inputMenu = Integer.parseInt(scn.nextLine());
@@ -244,9 +274,12 @@ public class BookMain {
 			case 4: // 4. 목록
 				listFunc();
 				break; // case 4 종료.
-			case 5: // 4. 목록
+			case 5: // 5. 상세 정보
 				detaileInfo();
 				break; // case 5 종료.
+			case 6: // 6. 출판사 조회
+				searchPub();
+				break; // case 6 종료
 			case 0:
 				run = false;
 				break;

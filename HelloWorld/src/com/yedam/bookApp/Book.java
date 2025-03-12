@@ -76,7 +76,7 @@ public class Book {
 	}
 	public void showBookInfo() {
 		System.out.println("책번호 : " + orderNo + " | 도서명 : " + bookName + " | 저자 : " + author +
-				" | 출판사 : " + publisher + " | 가격 : " + price + "\n");
+				" | 출판사 : " + publisher + " | 가격 : " + price);
 	}
 	public void setBookInfo(String bookName, String author, String publisher, int price, int orderNo){
 		this.bookName = bookName;

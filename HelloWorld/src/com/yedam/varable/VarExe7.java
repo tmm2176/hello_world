@@ -73,7 +73,7 @@ public class VarExe7 {
 					}
 					else if(storage[i] != null && storage[i].getName().equals(name) != true) {
 						System.out.println("해당 이름이 목록에 존재하지 않습니다\n");
-						break;
+						continue;
 					}
 				}
 				break; // case 3 종료.

@@ -58,7 +58,7 @@ public class ArrayExe3Calender {
 //	    	
 //	    	방법 1=====================================
 //          방법 2=====================================
-	    	if (i == 21) {
+	    	if (thisMonth == 3 && i == 21) {
 	    		System.out.print(" 평가");
 	    	}
 	    	else if(i != 21) {

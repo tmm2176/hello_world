@@ -1,7 +1,7 @@
 package com.yedam.classes;
 
 public class MethodExe3 {	
-	// 구구단 출력 함수
+	// 구구단 출력 메소드
     String gugudan(int num, int toNum){
 	    String result = "";
     	int temp = 0;
@@ -19,6 +19,7 @@ public class MethodExe3 {
 		return result;
 	} // end of gugudan(int num, int toNum)
     
+    // 별 출력 메소드
     void printStar(int cnt, String str) {
     	for(int i = 0; i < cnt ; i++) {
     		for(int j = 0; j <= i; j++) {
@@ -28,23 +29,31 @@ public class MethodExe3 {
     	} // end of for
     } // end of printStar()
     
+    // 난수 카드 출력 메소드
     void printCard() {
     	int[] intAry = new int[16];
-    	int createNum = 0;
-    	// 1 ~ 16까지의 임의 수 할당
     	for (int i = 0; i < intAry.length; i++) {
-    		createNum = (int) (Math.random() * 16) + 1;
-    		for(int j = 0; j < intAry.length; j++) {
-    			if(createNum == intAry[j]) {
-    				createNum = (int)(Math.random() * 16) + 1;
-    				j--;
-    		    } // end of if
-    		} // end of for
-    		intAry[i] = createNum;    				
+    		// 1 ~ 16까지의 임의 수 생성
+    		intAry[i] = (int) (Math.random() * 16) + 1;
+    		int j = 0;
+    		while(j < i) {
+    			if(intAry[j] != intAry[i]) {
+    				j++;
+    			}
+    			else if(intAry[j] == intAry[i]) {
+    				System.out.println("자리 : " + (i + 1));
+    				System.out.println("j : " + intAry[j] + " / 처음 i : " + intAry[i]);
+    				intAry[i] = (int)(Math.random() * 16) + 1;    				
+    				System.out.println("변경 i : " + intAry[i] + "\n");
+    			} // end of if
+    		} // end of while    				
     	} // end of for
+    	
+    	
+    	
     	// print
     	for (int i = 0; i < intAry.length; i++) {
-    		System.out.printf("%3d", intAry[i]);
+    		System.out.printf("%5d", intAry[i]);
     		if(i % 4 == 3) {
     			System.out.println();
     		}

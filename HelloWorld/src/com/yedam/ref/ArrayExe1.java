@@ -32,5 +32,5 @@ public class ArrayExe1 {
 		for (int i = 0; i < intAry.length; i++) {
 			System.out.println(i + "번째 값은 " + intAry[i]);
 		}
-	}
+	} // end of main()
 }

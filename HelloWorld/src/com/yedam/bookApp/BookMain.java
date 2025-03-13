@@ -37,6 +37,13 @@ public class BookMain {
 				}
 			}
 		}
+		int orderNo = 1;
+		for(int i = 0; i < bookStore.length; i++) {
+			if(bookStore[i] != null) {
+				bookStore[i].setOrderNo(orderNo);
+				orderNo++;
+			}
+		}
 //===========================[ 아래쪽은 내가 했던 거]============================
 //		 for(int i = 0; i < bookStore.length - 1; i++) {
 //			 for(int j = 0; j < bookStore.length - 1; j++){
@@ -183,20 +190,71 @@ public class BookMain {
 		}
 	} // end of delFunc()
 	
+	// listFunc()과 searchPub에서 사용할 리스트
+	public static Book[] searchList(String keyword) {
+		Book[] list = new Book[100];
+		int idx = 0;
+		for(int i = 0; i < bookStore.length; i++) {
+			if (bookStore[i] != null) {
+				if (keyword == null //
+						|| bookStore[i].getPublisher().equals(keyword)) {
+					list[idx++] = bookStore[i];
+				} // end of if				
+			} // end of if
+		} // end of for
+		return list;
+	} // end of searchList(String keyword)
+	
 	// 목록 출력
 	public static void listFunc() {
 		bookSort();
-		int seqNo = 1;
+//		int seqNo = 1;
+		Book[] list = searchList(null);
 //		System.out.println("순번      |도서명          |저자           |가격    ");
 		System.out.println("=================================================================");
-		for(int i = 0; i < bookStore.length; i++) {
-			if(bookStore[i] != null) {
-				System.out.println((seqNo++) + " " + bookStore[i].showList());
+		for(int i = 0; i < list.length; i++) {
+			if(list[i] != null) {
+				System.out.println(list[i].getOrderNo()+ " " + list[i].showList());
 				}
 		}
 		System.out.println();
 	} // end of listFunc()
     
+	// 출판사 출력
+	public static void searchPub() {
+//		Book[] pubBookList = new Book[100];
+//		int searchBookCount = 0;
+		String bPublisher = "";
+        boolean isExist = false;
+        Book[] list = searchList(null);
+        
+		System.out.print("출판사 명을 입력하세요 (Enter키는 모든 책 출력) >> ");
+		bPublisher = scn.nextLine();
+		
+		for(int i = 0; i < list.length; i++) {
+			if (list[i] != null //
+					&& bPublisher.isBlank()) {
+				list[i].showBookInfo();
+				isExist = true;
+			}
+			else if(list[i] != null //
+					&& list[i].getPublisher().equals(bPublisher)) {
+				list[i].showBookInfo();
+//				pubBookList[searchBookCount] = bookStore[i];
+//				searchBookCount++;
+				isExist = true;
+			}
+		}
+//		for(int i = 0; i < searchBookCount; i++) {
+//			if(bookStore[i] != null) {
+//				pubBookList[i].showBookInfo();				
+//			}
+//		}
+		if(isExist == false) {
+			System.out.println("입력하신 출판사를 찾지 못했습니다.");
+		}
+	} // end of searchPub()
+	
 	// 상세 정보
 	public static void detaileInfo() {
 		boolean isExist = false;
@@ -216,33 +274,7 @@ public class BookMain {
 		}
 	} // end of detaileInfo()
 	
-	// 출판사 출력
-	public static void searchPub() {
-		Book[] pubBookList = new Book[100];
-		String bPublisher = "";
-        int searchBookCount = 0;
-        boolean isExist = false;
-        
-		System.out.print("출판사 명을 입력하세요>> ");
-		bPublisher = scn.nextLine();
-		
-		for(int i = 0; i < bookStore.length; i++) {
-			if(bookStore[i] != null //
-					&& bookStore[i].getPublisher().equals(bPublisher)) {
-				pubBookList[searchBookCount] = bookStore[i];
-				searchBookCount++;
-				isExist = true;
-			}
-		}
-		for(int i = 0; i < searchBookCount; i++) {
-			if(bookStore[i] != null) {
-				pubBookList[i].showBookInfo();				
-			}
-		}
-		if(isExist == false) {
-			System.out.println("입력하신 출판사를 찾지 못했습니다.");
-		}
-	}
+
     public static void main(String[] args) {
 //		test code
 //		Book book = new Book("이것이 자바다" ,"신용권" ,"한빛미디어" ,20000 );
@@ -292,8 +324,10 @@ public class BookMain {
 	public static void init() {
 		bookStore[0] = new Book("자바" ,"서강중" ,"예담" ,12000, 1);
 		bookStore[1] = new Book("파이썬" ,"이름임" ,"예담" ,14000, 2);
-		bookStore[2] = new Book("나머지" ,"그냥이름" ,"예담" ,15000, 3);	
-		bookStore[3] = new Book("리눅스", "우분투", "추가", 30000, 4);
+		bookStore[2] = new Book("리눅스", "우분투", "추가", 30000, 3);
+		bookStore[3] = new Book("나머지" ,"그냥이름" ,"예담" ,15000, 4);
+		bookStore[4] = new Book("C++" ,"름이이" ,"추가" ,15000, 5);	
+		bookStore[5] = new Book("C#" ,"사람아님" ,"기타" ,15000, 6);	
 	}
 
 }

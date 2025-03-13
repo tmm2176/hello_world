@@ -25,10 +25,11 @@ public class Book {
 		this.price = price;
 	}
 	public Book(String bookName, String author, String publisher, int price, int orderNo) {
-		this.bookName = bookName;
-		this.author = author;
-		this.publisher = publisher;
-		this.price = price;
+//		this.bookName = bookName;
+//		this.author = author;
+//		this.publisher = publisher;
+//		this.price = price;
+		this(bookName, author, publisher, price); //this 생성된 인스턴스
 		this.orderNo = orderNo;
 	}
 	// 메소드
@@ -75,7 +76,7 @@ public class Book {
 			return show;
 	}
 	public void showBookInfo() {
-		System.out.println("책번호 : " + orderNo + " | 도서명 : " + bookName + " | 저자 : " + author +
+		System.out.println("No. " + orderNo + " | 도서명 : " + bookName + " | 저자 : " + author +
 				" | 출판사 : " + publisher + " | 가격 : " + price);
 	}
 	public void setBookInfo(String bookName, String author, String publisher, int price, int orderNo){

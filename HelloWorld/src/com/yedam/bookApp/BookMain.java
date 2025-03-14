@@ -8,12 +8,25 @@ import com.yedam.varable.Member;
  * 도서 등록, 수정, 삭제, 목록 기능
  */
 public class BookMain {
+	// 싱글톤
+	// 2. 정적필드 할당
+	private static BookMain instance = new BookMain();
+	
+	// 1. 생성자 private 선언
+	private BookMain() {}
+	// 3. getInstance() 제공
+	
+	public static BookMain getInstance() {
+		return instance;
+	}
+	
+	
 	// 저장공간
-	static Scanner scn = new Scanner(System.in);
-	static Book[] bookStore = new Book[100];
+	 Scanner scn = new Scanner(System.in);
+	 Book[] bookStore = new Book[100];
 
 	// 순번 생성
-	public static int getSequnceNo() {
+	public int getSequnceNo() {
 		 int maxValue = 0;
 		 for(int i = 0 ; i < bookStore.length; i++) {
 			 if(bookStore[i] != null && maxValue < bookStore[i].getOrderNo()) {
@@ -22,7 +35,7 @@ public class BookMain {
 		 }
 		 return (maxValue + 1);
 	}
-	public static void bookSort() {
+	public void bookSort() {
 		Book temp = new Book();
 		for(int i = 0; i < bookStore.length - 1; i++) {
 			for(int j = 0; j < bookStore.length -1; j++) {
@@ -64,10 +77,10 @@ public class BookMain {
 //			 }
 //		 }
 	}
-    // static으로 선언하면 호출할 때 다른 처리를 굳이 해주지 않아도 상관없어짐
+    // 으로 선언하면 호출할 때 다른 처리를 굳이 해주지 않아도 상관없어짐
 	// 등록
 	// 이미 등록된 이름의 책은 입력 불가
-	public static void addFunc() {		
+	public void addFunc() {		
 		String bName = "";
 		String bAuthor= "";
 		String bPublisher = "";
@@ -104,7 +117,7 @@ public class BookMain {
 	} // end of addFunc()
 	
 	// 수정
-	public static void editFunc() {
+	public void editFunc() {
 		String bName = "";
 		String bAuthor= "";
 		String bPublisher = "";
@@ -165,7 +178,7 @@ public class BookMain {
 	} // end of editFunc()
 	
 	// 삭제
-	public static void delFunc() {
+	public void delFunc() {
 		String bName = "";
 		boolean isExist = true;
 		
@@ -191,7 +204,7 @@ public class BookMain {
 	} // end of delFunc()
 	
 	// listFunc()과 searchPub에서 사용할 리스트
-	public static Book[] searchList(String keyword) {
+	public Book[] searchList(String keyword) {
 		Book[] list = new Book[100];
 		int idx = 0;
 		for(int i = 0; i < bookStore.length; i++) {
@@ -206,11 +219,11 @@ public class BookMain {
 	} // end of searchList(String keyword)
 	
 	// 목록 출력
-	public static void listFunc() {
+	public void listFunc() {
 		bookSort();
 //		int seqNo = 1;
 		Book[] list = searchList(null);
-//		System.out.println("순번      |도서명          |저자           |가격    ");
+		System.out.println("순번|도서명|저자|가격");
 		System.out.println("=================================================================");
 		for(int i = 0; i < list.length; i++) {
 			if(list[i] != null) {
@@ -221,7 +234,7 @@ public class BookMain {
 	} // end of listFunc()
     
 	// 출판사 출력
-	public static void searchPub() {
+	public void searchPub() {
 //		Book[] pubBookList = new Book[100];
 //		int searchBookCount = 0;
 		String bPublisher = "";
@@ -256,7 +269,7 @@ public class BookMain {
 	} // end of searchPub()
 	
 	// 상세 정보
-	public static void detaileInfo() {
+	public void detaileInfo() {
 		boolean isExist = false;
 		String bName = "";
 		System.out.print("검색 도서명>> ");
@@ -274,8 +287,8 @@ public class BookMain {
 		}
 	} // end of detaileInfo()
 	
-
-    public static void main(String[] args) {
+    // main이 static인 경우, 호출할 메소드 전부 static 이어야 사용 가능
+    public void main(String[] args) {
 //		test code
 //		Book book = new Book("이것이 자바다" ,"신용권" ,"한빛미디어" ,20000 );
 //		System.out.println(book.getPrice()); // get 메소드 테스트
@@ -321,7 +334,7 @@ public class BookMain {
 		}
 	    System.out.println("end of prog.");
 	} // end of main()
-	public static void init() {
+	public void init() {
 		bookStore[0] = new Book("자바" ,"서강중" ,"예담" ,12000, 1);
 		bookStore[1] = new Book("파이썬" ,"이름임" ,"예담" ,14000, 2);
 		bookStore[2] = new Book("리눅스", "우분투", "추가", 30000, 3);

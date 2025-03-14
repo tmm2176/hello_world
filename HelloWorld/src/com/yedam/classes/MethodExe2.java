@@ -26,7 +26,7 @@ public class MethodExe2 {
 		} return false;
 	} // end of productAdd(Product prd)
 	
-	// 입력받은 상품 정보 반환, ALL을 입력받을 시 모든 정보 반환
+	// 입력받은 조건의 상품 정보 반환, ALL을 입력받을 시 모든 정보 반환
 	Product[] productList(Product searchProd) {
 		Product[] list = new Product[10];
 		int idx = 0;

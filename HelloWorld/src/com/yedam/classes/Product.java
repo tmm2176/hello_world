@@ -10,8 +10,8 @@ public class Product {
 	
 	Product(){}
 	Product(String pc, String pn, int price){
-		productCode = pc;
-		productName = pn;
+		this.productCode = pc;
+		this.productName = pn;
 		this.price = price;
 	}
 	public String getProductCode() {

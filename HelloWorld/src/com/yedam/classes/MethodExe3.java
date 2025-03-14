@@ -32,6 +32,7 @@ public class MethodExe3 {
     // 난수 카드 출력 메소드
     void printCard() {
     	int[] intAry = new int[16];
+    	
     	for (int i = 0; i < intAry.length; i++) {
     		// 1 ~ 16까지의 임의 수 생성
     		intAry[i] = (int) (Math.random() * 16) + 1;
@@ -41,10 +42,12 @@ public class MethodExe3 {
     				j++;
     			}
     			else if(intAry[j] == intAry[i]) {
-    				System.out.println("자리 : " + (i + 1));
-    				System.out.println("j : " + intAry[j] + " / 처음 i : " + intAry[i]);
-    				intAry[i] = (int)(Math.random() * 16) + 1;    				
-    				System.out.println("변경 i : " + intAry[i] + "\n");
+//    				System.out.println("자리 : " + (i + 1));
+//    				System.out.println("j : " + intAry[j] + " / 처음 i : " + intAry[i]);
+    				intAry[i] = (int)(Math.random() * 16) + 1;		
+//    				System.out.println("변경 i : " + intAry[i] + "\n");
+    				j = 0;
+    				// j값을 초기화 해줘야 다시 처음부터 탐색
     			} // end of if
     		} // end of while    				
     	} // end of for

@@ -24,7 +24,8 @@ public class BookMain {
 	// 저장공간
 	 Scanner scn = new Scanner(System.in);
 	 Book[] bookStore = new Book[100];
-
+	 User[] user = new User[50];
+	 
 	// 순번 생성
 	public int getSequnceNo() {
 		 int maxValue = 0;
@@ -286,6 +287,17 @@ public class BookMain {
 			System.out.println("입력하신 책을 찾지 못했습니다.\n");
 		}
 	} // end of detaileInfo()
+	public boolean loginFunc(String id, String pw) {
+		for(int i = 0; i < user.length; i++) {
+			if (user[i].getUserId().equals(id)) {
+				if(user[i].getPassword().equals(pw)) {
+					return true;
+				} // end of if
+			} // end of if			
+		} // end of for
+		return false;
+	} // end of loginFunc(String id, String pw)
+	
 	
     // main이 static인 경우, 호출할 메소드 전부 static 이어야 사용 가능
     public void main(String[] args) {
@@ -295,14 +307,26 @@ public class BookMain {
 //		book.showBookInfo();
 		
 		// 샘플 데이터
-		init();
+    	initBookStore();
+    	initUser();   	
+    	
 		boolean run = true;	
 		while(run) {
+			int menu = 0;
+			String inputId = "";
+			String inputPw = "";
+			
+			if(loginFunc(inputId, inputPw)) {
+				System.out.println("로그인 성공");
+			}else if(loginFunc(inputId, inputPw) == false) {
+				System.out.println("로그인 실패, 아이디와 비밀번호를 다시 확인하세요");
+				continue;
+			}
+			
+			menu = Integer.parseInt(scn.nextLine());
 		    System.out.println("\n1. 도서등록 | 2. 수정 | 3. 삭제 | 4. 목록 | 5. 상세 조회 | 6. 출판사 조회 | 0. 종료");
 		    System.out.print("선택 >> ");
-		    int menu = Integer.parseInt(scn.nextLine());
 //		    String inputMenu = Integer.parseInt(scn.nextLine());
-//		    int menu = 0;
 //		    if(inputMenu) {}
 //		    else if() {}
 		    
@@ -334,7 +358,12 @@ public class BookMain {
 		}
 	    System.out.println("end of prog.");
 	} // end of main()
-	public void init() {
+	public void initUser() {
+		user[0] = new User("userOne" ,"서강중" ,"qwer1234");
+		user[1] = new User("userTwo" ,"이호원" ,"asdf3456");
+		user[2] = new User("userThree", "이름임", "zxcv4567");
+	}
+	public void initBookStore() {
 		bookStore[0] = new Book("자바" ,"서강중" ,"예담" ,12000, 1);
 		bookStore[1] = new Book("파이썬" ,"이름임" ,"예담" ,14000, 2);
 		bookStore[2] = new Book("리눅스", "우분투", "추가", 30000, 3);

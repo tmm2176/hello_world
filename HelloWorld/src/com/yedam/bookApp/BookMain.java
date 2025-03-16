@@ -22,12 +22,12 @@ public class BookMain {
 	
 	
 	// 저장공간
-	 Scanner scn = new Scanner(System.in);
-	 Book[] bookStore = new Book[100];
-	 User[] user = new User[50];
+	 static Scanner scn = new Scanner(System.in);
+	 static Book[] bookStore = new Book[100];
+	 static User[] user = new User[3];
 	 
 	// 순번 생성
-	public int getSequnceNo() {
+	public static int getSequnceNo() {
 		 int maxValue = 0;
 		 for(int i = 0 ; i < bookStore.length; i++) {
 			 if(bookStore[i] != null && maxValue < bookStore[i].getOrderNo()) {
@@ -36,7 +36,7 @@ public class BookMain {
 		 }
 		 return (maxValue + 1);
 	}
-	public void bookSort() {
+	public static void bookSort() {
 		Book temp = new Book();
 		for(int i = 0; i < bookStore.length - 1; i++) {
 			for(int j = 0; j < bookStore.length -1; j++) {
@@ -81,7 +81,7 @@ public class BookMain {
     // 으로 선언하면 호출할 때 다른 처리를 굳이 해주지 않아도 상관없어짐
 	// 등록
 	// 이미 등록된 이름의 책은 입력 불가
-	public void addFunc() {		
+	public static void addFunc() {		
 		String bName = "";
 		String bAuthor= "";
 		String bPublisher = "";
@@ -118,7 +118,7 @@ public class BookMain {
 	} // end of addFunc()
 	
 	// 수정
-	public void editFunc() {
+	public static void editFunc() {
 		String bName = "";
 		String bAuthor= "";
 		String bPublisher = "";
@@ -179,7 +179,7 @@ public class BookMain {
 	} // end of editFunc()
 	
 	// 삭제
-	public void delFunc() {
+	public static void delFunc() {
 		String bName = "";
 		boolean isExist = true;
 		
@@ -205,7 +205,7 @@ public class BookMain {
 	} // end of delFunc()
 	
 	// listFunc()과 searchPub에서 사용할 리스트
-	public Book[] searchList(String keyword) {
+	public static Book[] searchList(String keyword) {
 		Book[] list = new Book[100];
 		int idx = 0;
 		for(int i = 0; i < bookStore.length; i++) {
@@ -220,7 +220,7 @@ public class BookMain {
 	} // end of searchList(String keyword)
 	
 	// 목록 출력
-	public void listFunc() {
+	public static void listFunc() {
 		bookSort();
 //		int seqNo = 1;
 		Book[] list = searchList(null);
@@ -235,7 +235,7 @@ public class BookMain {
 	} // end of listFunc()
     
 	// 출판사 출력
-	public void searchPub() {
+	public static void searchPub() {
 //		Book[] pubBookList = new Book[100];
 //		int searchBookCount = 0;
 		String bPublisher = "";
@@ -270,7 +270,7 @@ public class BookMain {
 	} // end of searchPub()
 	
 	// 상세 정보
-	public void detaileInfo() {
+	public static void detaileInfo() {
 		boolean isExist = false;
 		String bName = "";
 		System.out.print("검색 도서명>> ");
@@ -287,10 +287,12 @@ public class BookMain {
 			System.out.println("입력하신 책을 찾지 못했습니다.\n");
 		}
 	} // end of detaileInfo()
-	public boolean loginFunc(String id, String pw) {
+	public static boolean loginFunc(String id, String pw) {
 		for(int i = 0; i < user.length; i++) {
-			if (user[i].getUserId().equals(id)) {
-				if(user[i].getPassword().equals(pw)) {
+			if (user[i] != null && //
+					user[i].getUserId().equals(id)) {
+				if(user[i] != null && //
+						user[i].getPassword().equals(pw)) {
 					return true;
 				} // end of if
 			} // end of if			
@@ -298,9 +300,29 @@ public class BookMain {
 		return false;
 	} // end of loginFunc(String id, String pw)
 	
+	public static boolean logOutFunc() {
+		boolean run = true;
+		System.out.println("로그아웃 하시겠습니까?");
+		while(run) {
+			System.out.print("y/n >> ");
+			String inputLogout = scn.nextLine();
+			if(inputLogout.equals("y") || inputLogout.equals("Y")) {
+				System.out.println("로그아웃");
+				return true;
+			}else if(inputLogout.equals("n") || inputLogout.equals("N")) {
+				System.out.println("로그인 상태 유지");
+				return false;
+			}
+			else {
+				System.out.println("y 또는 n을 입력해주세요\n");
+			} //end of if
+		} //end of while
+		return false;
+	} // end of logoutFunc()
+	
 	
     // main이 static인 경우, 호출할 메소드 전부 static 이어야 사용 가능
-    public void main(String[] args) {
+    public static void main(String[] args) {
 //		test code
 //		Book book = new Book("이것이 자바다" ,"신용권" ,"한빛미디어" ,20000 );
 //		System.out.println(book.getPrice()); // get 메소드 테스트
@@ -309,23 +331,35 @@ public class BookMain {
 		// 샘플 데이터
     	initBookStore();
     	initUser();   	
+    	boolean logIn = true;
+    	boolean run = true;
+
+    	while(logIn) {
+    		System.out.print("ID 입력 (stop 입력시 프로그램 종료) >> ");
+    		String inputId = scn.nextLine();
+    		if(inputId.equals("stop")) {
+    			System.out.println("프로그램을 종료합니다");
+    			run = false;
+    			break;
+    		}
+    		System.out.print("PW 입력 >> ");
+    		String inputPw = scn.nextLine();    		
+    		
+    		if(loginFunc(inputId, inputPw)) {
+    			System.out.println("로그인 성공");
+    			logIn = false;
+    		}else if(loginFunc(inputId, inputPw) == false) {
+    			System.out.println("로그인 실패, 아이디와 비밀번호를 다시 확인하세요\n");
+    		}   		
+    	}
     	
-		boolean run = true;	
 		while(run) {
 			int menu = 0;
-			String inputId = "";
-			String inputPw = "";
 			
-			if(loginFunc(inputId, inputPw)) {
-				System.out.println("로그인 성공");
-			}else if(loginFunc(inputId, inputPw) == false) {
-				System.out.println("로그인 실패, 아이디와 비밀번호를 다시 확인하세요");
-				continue;
-			}
-			
+			System.out.println("\n1. 도서등록 | 2. 수정 | 3. 삭제 | 4. 목록 | 5. 상세 조회 |"
+					+ " 6. 출판사 조회 | 7.로그아웃 | 0. 종료");
+			System.out.print("선택 >> ");
 			menu = Integer.parseInt(scn.nextLine());
-		    System.out.println("\n1. 도서등록 | 2. 수정 | 3. 삭제 | 4. 목록 | 5. 상세 조회 | 6. 출판사 조회 | 0. 종료");
-		    System.out.print("선택 >> ");
 //		    String inputMenu = Integer.parseInt(scn.nextLine());
 //		    if(inputMenu) {}
 //		    else if() {}
@@ -349,6 +383,12 @@ public class BookMain {
 			case 6: // 6. 출판사 조회
 				searchPub();
 				break; // case 6 종료
+			case 7: // 7. 로그아웃
+				if (logOutFunc() == true) {
+					run = false;
+					break;
+				}
+				break; // case 7 종료
 			case 0:
 				run = false;
 				break;
@@ -358,12 +398,12 @@ public class BookMain {
 		}
 	    System.out.println("end of prog.");
 	} // end of main()
-	public void initUser() {
-		user[0] = new User("userOne" ,"서강중" ,"qwer1234");
-		user[1] = new User("userTwo" ,"이호원" ,"asdf3456");
-		user[2] = new User("userThree", "이름임", "zxcv4567");
+	public static void initUser() {
+		user[0] = new User("user1" ,"서강중" ,"q1234");
+		user[1] = new User("user2" ,"이호원" ,"q3456");
+		user[2] = new User("user3", "이름임", "q4567");
 	}
-	public void initBookStore() {
+	public static void initBookStore() {
 		bookStore[0] = new Book("자바" ,"서강중" ,"예담" ,12000, 1);
 		bookStore[1] = new Book("파이썬" ,"이름임" ,"예담" ,14000, 2);
 		bookStore[2] = new Book("리눅스", "우분투", "추가", 30000, 3);

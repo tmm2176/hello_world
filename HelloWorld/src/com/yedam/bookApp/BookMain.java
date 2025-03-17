@@ -9,22 +9,21 @@ import com.yedam.varable.Member;
  */
 public class BookMain {
 	// 싱글톤
-	// 2. 정적필드 할당
-	private static BookMain instance = new BookMain();
-	
-	// 1. 생성자 private 선언
-	private BookMain() {}
-	// 3. getInstance() 제공
-	
-	public static BookMain getInstance() {
-		return instance;
-	}
-	
+ 	// 2. 정적필드 할당
+ 	private static BookMain instance = new BookMain();
+ 	
+ 	// 1. 생성자 private 선언
+ 	private BookMain() {}
+ 	// 3. getInstance() 제공
+ 	
+ 	public static BookMain getInstance() {
+ 		return instance;
+ 	}
 	
 	// 저장공간
-	 static Scanner scn = new Scanner(System.in);
-	 static Book[] bookStore = new Book[100];
-	 static User[] user = new User[3];
+ 	 static Scanner scn = new Scanner(System.in);
+ 	 static Book[] bookStore = new Book[100];
+ 	 static User[] userList = new User[3];
 	 
 	// 순번 생성
 	public static int getSequnceNo() {
@@ -78,7 +77,7 @@ public class BookMain {
 //			 }
 //		 }
 	}
-    // 으로 선언하면 호출할 때 다른 처리를 굳이 해주지 않아도 상관없어짐
+    // static? 으로 선언하면 호출할 때 다른 처리를 굳이 해주지 않아도 상관없어짐
 	// 등록
 	// 이미 등록된 이름의 책은 입력 불가
 	public static void addFunc() {		
@@ -287,12 +286,14 @@ public class BookMain {
 			System.out.println("입력하신 책을 찾지 못했습니다.\n");
 		}
 	} // end of detaileInfo()
-	public static boolean loginFunc(String id, String pw) {
-		for(int i = 0; i < user.length; i++) {
-			if (user[i] != null && //
-					user[i].getUserId().equals(id)) {
-				if(user[i] != null && //
-						user[i].getPassword().equals(pw)) {
+	
+	//로그인 함수
+	public static boolean logInFunc(String id, String pw) {
+		for(int i = 0; i < userList.length; i++) {
+			if (userList[i] != null && //
+					userList[i].getUserId().equals(id)) {
+				if(userList[i] != null && //
+						userList[i].getPassword().equals(pw)) {
 					return true;
 				} // end of if
 			} // end of if			
@@ -323,16 +324,12 @@ public class BookMain {
 	
     // main이 static인 경우, 호출할 메소드 전부 static 이어야 사용 가능
     public static void main(String[] args) {
-//		test code
-//		Book book = new Book("이것이 자바다" ,"신용권" ,"한빛미디어" ,20000 );
-//		System.out.println(book.getPrice()); // get 메소드 테스트
-//		book.showBookInfo();
-		
 		// 샘플 데이터
     	initBookStore();
     	initUser();   	
     	boolean logIn = true;
     	boolean run = true;
+    	int menu = 0;
 
     	while(logIn) {
     		System.out.print("ID 입력 (stop 입력시 프로그램 종료) >> ");
@@ -345,21 +342,31 @@ public class BookMain {
     		System.out.print("PW 입력 >> ");
     		String inputPw = scn.nextLine();    		
     		
-    		if(loginFunc(inputId, inputPw)) {
+    		if(logInFunc(inputId, inputPw)) {
     			System.out.println("로그인 성공");
     			logIn = false;
-    		}else if(loginFunc(inputId, inputPw) == false) {
+    		}else if(logInFunc(inputId, inputPw) == false) {
     			System.out.println("로그인 실패, 아이디와 비밀번호를 다시 확인하세요\n");
     		}   		
     	}
     	
 		while(run) {
-			int menu = 0;
-			
 			System.out.println("\n1. 도서등록 | 2. 수정 | 3. 삭제 | 4. 목록 | 5. 상세 조회 |"
 					+ " 6. 출판사 조회 | 7.로그아웃 | 0. 종료");
 			System.out.print("선택 >> ");
-			menu = Integer.parseInt(scn.nextLine());
+			
+			//예외처리
+			while(true) {
+				try {
+					menu = Integer.parseInt(scn.nextLine());
+					break;
+				}
+				catch (NumberFormatException e) {
+					System.out.println("menu에 맞는 숫자를 입력해주세요");
+					System.out.print("선택 >> ");
+				}				
+			}
+
 //		    String inputMenu = Integer.parseInt(scn.nextLine());
 //		    if(inputMenu) {}
 //		    else if() {}
@@ -389,19 +396,20 @@ public class BookMain {
 					break;
 				}
 				break; // case 7 종료
-			case 0:
+			case 0: // 0. 종료
 				run = false;
 				break;
 			default:
 				System.out.println("잘못된 입력입니다. 메뉴를 다시 선택하세요");
 			}
 		}
-	    System.out.println("end of prog.");
+	    System.out.println("end of prog");
 	} // end of main()
+    
 	public static void initUser() {
-		user[0] = new User("user1" ,"서강중" ,"q1234");
-		user[1] = new User("user2" ,"이호원" ,"q3456");
-		user[2] = new User("user3", "이름임", "q4567");
+		userList[0] = new User("user1" ,"서강중" ,"q1234");
+		userList[1] = new User("user2" ,"이호원" ,"q3456");
+		userList[2] = new User("user3", "이름임", "q4567");
 	}
 	public static void initBookStore() {
 		bookStore[0] = new Book("자바" ,"서강중" ,"예담" ,12000, 1);

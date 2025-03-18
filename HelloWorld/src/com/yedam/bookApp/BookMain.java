@@ -23,7 +23,7 @@ public class BookMain {
 	// 저장공간
  	 static Scanner scn = new Scanner(System.in);
  	 static Book[] bookStore = new Book[100];
- 	 static User[] userList = new User[3];
+ 	 static User[] userList = new User[50];
 	 
 	// 순번 생성
 	public static int getSequnceNo() {

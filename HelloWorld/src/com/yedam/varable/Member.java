@@ -19,6 +19,7 @@ public class Member {
 		this.name = name;
 		this.score = score;
 	}
+	
 	// 클래스 : 메소드(기능) 반환값 메소드명(매개값)
 	public String getName() {
 		return name;
@@ -45,4 +46,21 @@ public class Member {
 		// 이름이 같은 경우 매개변수가 우선임
 		// 클래스 내부 변수를 호출할 때는 this
 	}
+	// toString 재정의 250318 추가
+	public String toString() {
+		return "이름: " + name + ", 점수: " + score;
+	}
+	// Set 컬렉션의 중복된 값으로 지정 //250318 추가
+	// name, score -> hashCode + equals -> 동일한 값
+	@Override
+	public int hashCode() {
+		return score;
+	}
+	public boolean equals(Object obj) {
+		if(obj instanceof Member) {
+			Member target  = (Member) obj;
+			return this.name.equals(target.name);
+		}
+		return false;
+	}	
 }

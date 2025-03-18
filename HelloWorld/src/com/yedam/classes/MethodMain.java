@@ -1,10 +1,11 @@
 package com.yedam.classes;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class MethodMain {
 	public static void main(String[] args) {
-		
+		//Scanner scn;
 		officeApp();
 		
 	} // end of main()
@@ -41,11 +42,9 @@ public class MethodMain {
 				searchProd.setProductName(inputProdName);
 				searchProd.setPrice(inputProdPrice);
 				
-				Product[] list = m2.productList(searchProd);
-				for(int i = 0; i < list.length; i++) {
-					if(list[i] != null) {
-						System.out.println(list[i].showProductInfo());
-					}
+				List<Product> list = m2.productList(searchProd);
+				for(int i = 0; i < list.size(); i++) {
+						System.out.println(list.get(i).showProductInfo());
 				}
 				System.out.println();
 				break; // end of case1
@@ -139,10 +138,10 @@ public class MethodMain {
 		if(m2.productAdd(prod) == true) {
 			System.out.println("등록완료");
 		}
-		Product[] list = m2.productList(searchProd);
-		for(int i = 0; i < list.length; i++) {
-			if(list[i] != null) {
-				System.out.println(list[i].showProductInfo());
+		List<Product> list = m2.productList(searchProd);
+		for(int i = 0; i < list.size(); i++) {
+			if(list.get(i) != null) {
+				System.out.println(list.get(i).showProductInfo());
 			}
 		}
 		System.out.println();
@@ -154,9 +153,9 @@ public class MethodMain {
 		}
 		
 		list = m2.productList(searchProd);
-		for(int i = 0; i < list.length; i++) {
-			if(list[i] != null) {
-				System.out.println(list[i].showProductInfo());
+		for(int i = 0; i < list.size(); i++) {
+			if(list.get(i) != null) {
+				System.out.println(list.get(i).showProductInfo());
 			}
 		}
 		
@@ -169,9 +168,9 @@ public class MethodMain {
 			System.out.println("수정실패");
 		}
 		list = m2.productList(searchProd);
-		for(int i = 0; i < list.length; i++) {
-			if(list[i] != null) {
-				System.out.println(list[i].showProductInfo());
+		for(int i = 0; i < list.size(); i++) {
+			if(list.get(i) != null) {
+				System.out.println(list.get(i).showProductInfo());
 			}
 		}
 	} // end of method2

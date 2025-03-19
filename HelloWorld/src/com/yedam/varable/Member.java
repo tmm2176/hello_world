@@ -56,6 +56,8 @@ public class Member {
 	public int hashCode() {
 		return score;
 	}
+	
+	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof Member) {
 			Member target  = (Member) obj;

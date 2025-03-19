@@ -5,6 +5,7 @@ public class Book {
  * 필요 정보 : 도서제목, 저자, 출판사, 가격
  */
 	// 필드
+	private String bookCode;
 	private String bookName;
 	private String author;
 	private String publisher;
@@ -33,6 +34,9 @@ public class Book {
 		this.orderNo = orderNo;
 	}
 	// 메소드
+	public String getBookCode() {
+		return bookCode;
+	}
 	public String getBookName() {
 		return bookName;
 	}
@@ -47,6 +51,9 @@ public class Book {
 	}
 	public int getOrderNo() {
 		return orderNo;
+	}
+	public void setBookCode(String bookCode) {
+		this.bookCode = bookCode;
 	}
 	public void setBookName(String bookName) {
 		this.bookName = bookName;
@@ -68,7 +75,8 @@ public class Book {
 		this.orderNo = orderNo;
 	}
 	public String showList() {
-			String show = "도서명 : " + bookName + " | 저자 : " + author + " | 가격 : " + price;			
+			String show = "도서코드 : " + bookCode + " | 도서명 : "+ bookName 
+					+ " | 출판사 : " + publisher + " | 저자 : " + author + " | 가격 : " + price;			
 			return show;
 	}
 	public String showListWithNo() {
@@ -79,13 +87,21 @@ public class Book {
 		System.out.println("No. " + orderNo + " | 도서명 : " + bookName + " | 저자 : " + author +
 				" | 출판사 : " + publisher + " | 가격 : " + price);
 	}
-	public void setBookInfo(String bookName, String author, String publisher, int price, int orderNo){
+	public void setBookInfo(String bookCode, String bookName, String author, String publisher, int price){
+		this.bookCode = bookCode;
 		this.bookName = bookName;
 		this.author = author;
 		this.publisher = publisher;
 		this.price = price;
-		this.orderNo = orderNo;
+		//this.orderNo = orderNo;
 		// 이름이 같은 경우 매개변수가 우선임
 		// 클래스 내부 변수를 호출할 때는 this
 	}
+	@Override
+	public String toString() {
+		return "Book [bookName=" + bookName + ", author=" + author + ", publisher=" + publisher + ", price=" + price
+				+ ", orderNo=" + orderNo + ", bookCode=" + bookCode + "]";
+	}	
+	
+	
 }

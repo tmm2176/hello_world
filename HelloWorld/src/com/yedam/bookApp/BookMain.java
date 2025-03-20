@@ -19,14 +19,15 @@ public class BookMain {
  		return instance;
  	}
 	
- 	Book[] bookStore = new Book[100];
- 	User[] userList = new User[50];
- 	
-	public void initUser() {
-		userList[0] = new User("user1" ,"서강중" ,"q1234");
-		userList[1] = new User("user2" ,"이호원" ,"q3456");
-		userList[2] = new User("user3", "이름임", "q4567");
-	}
+// 	Book[] bookStore = new Book[100];
+// 	User[] userList = new User[50];
+// 	
+//	public void initUser() {
+//		userList[0] = new User("user1" ,"서강중" ,"q1234");
+//		userList[1] = new User("user2" ,"이호원" ,"q3456");
+//		userList[2] = new User("user3", "이름임", "q4567");
+//		userList[3] = new User("1", "테스트용" ,"1");
+//	}
 //	public static void initBookStore() {
 //		bookStore[0] = new Book("자바" ,"서강중" ,"예담" ,12000, 1);
 //		bookStore[1] = new Book("파이썬" ,"이름임" ,"예담" ,14000, 2);
@@ -36,9 +37,9 @@ public class BookMain {
 //		bookStore[5] = new Book("C#" ,"사람아님" ,"기타" ,15000, 6);	
 //	}
 	// 저장공간
- 	Scanner scn = new Scanner(System.in);
-	BookJdbc dao = new BookJdbc(); //
- 	
+ 	Scanner scn = new Scanner(System.in); // scn 처리
+	BookJdbc dao = new BookJdbc(); // BookJdbc 처리
+	
 	// 순번 생성
 //	public int getSequnceNo() {
 //		 int maxValue = 0;
@@ -133,6 +134,7 @@ public class BookMain {
 	// 수정
 	public void editFunc() {
 		String bCode = "";
+		String bName= "";
 		String bAuthor= "";
 		String bPublisher = "";
 	    String inputPrice = "";
@@ -144,6 +146,8 @@ public class BookMain {
 			System.out.println("도서코드를 입력하세요! 메뉴로 돌아갑니다");
 		}
 		else if(bCode.isBlank() == false) {
+			System.out.print("(수정) 도서명>> ");
+			bName = scn.nextLine();
 			System.out.print("(수정) 저자>> ");
 			bAuthor = scn.nextLine();
 			System.out.print("(수정) 출판사>> ");
@@ -152,6 +156,8 @@ public class BookMain {
 			inputPrice = scn.nextLine();
 			
 			Book bok = new Book();
+			bok.setBookCode(bCode);
+			bok.setBookName(bName);
 			bok.setAuthor(bAuthor);
 			bok.setPublisher(bPublisher);
 			bok.setPrice(Integer.parseInt(inputPrice));
@@ -189,7 +195,7 @@ public class BookMain {
 	public void listFunc() {
 //		int seqNo = 1;
 		List<Book> list = searchList("");
-		System.out.println("도서코드|도서명|저자|가격");
+		System.out.println("도서코드|도서명|출판사|저자|가격");
 		System.out.println("=================================================================");
 		for(Book book : list) {
 			System.out.println(book.showList());
@@ -207,10 +213,10 @@ public class BookMain {
 		bPublisher = scn.nextLine();
 		List<Book> list = searchList(bPublisher);
 		
-		System.out.println("순번|도서명|저자|가격");
+		System.out.println("도서코드|도서명|출판사|저자|가격");
 		System.out.println("=================================================================");
 		for(Book book : list) {
-			System.out.println(book.getOrderNo()+ " " + book.showList());
+			System.out.println(book.showList());
 		}
 //		for(int i = 0; i < searchBookCount; i++) {
 //			if(bookStore[i] != null) {
@@ -229,17 +235,19 @@ public class BookMain {
 	} // end of detaileInfo()
 	
 	//로그인 함수
-	public boolean logInFunc(String id, String pw) {
-		for(int i = 0; i < userList.length; i++) {
-			if (userList[i] != null && //
-					userList[i].getUserId().equals(id)) {
-				if(userList[i] != null && //
-						userList[i].getPassword().equals(pw)) {
-					return true;
-				} // end of if
-			} // end of if			
-		} // end of for
-		return false;
+	public User logInFunc(String id, String pw) {
+		MemberJdbc dao = new MemberJdbc();
+		return dao.logInFunc(id, pw); // Memberjdbc클래스의 logInFunc
+//		for(int i = 0; i < userList.length; i++) {
+//			if (userList[i] != null && //
+//					userList[i].getUserId().equals(id)) {
+//				if(userList[i] != null && //
+//						userList[i].getPassword().equals(pw)) {
+//					return true;
+//				} // end of if
+//			} // end of if			
+//		} // end of for
+//		return false;
 	} // end of loginFunc(String id, String pw)
 	
 	public boolean logOutFunc() {
@@ -265,8 +273,7 @@ public class BookMain {
 	
     // main이 static인 경우, 호출할 메소드 전부 static 이어야 사용 가능
     public void main(String[] args) {
-		// 샘플 데이터
-    	initUser();   	
+		// 샘플 데이터  	
     	boolean logIn = true;
     	boolean run = true;
     	int menu = 0;
@@ -282,13 +289,17 @@ public class BookMain {
     		System.out.print("PW 입력 >> ");
     		String inputPw = scn.nextLine();    		
     		
-    		if(logInFunc(inputId, inputPw)) {
-    			System.out.println("로그인 성공");
+    		// 250320 로그인 기능 JDBC 연동
+    		// User Class or Map 컬렉션
+    		User user = logInFunc(inputId, inputPw);
+    		if(user != null) {
+    			System.out.println("로그인 성공\nHi, " + user.getUserName());
     			logIn = false;
-    		}else if(logInFunc(inputId, inputPw) == false) {
-    			System.out.println("로그인 실패, 아이디와 비밀번호를 다시 확인하세요\n");
-    		}   		
-    	}
+    		} // end of if
+    		else if(user == null) {
+    			System.out.println("로그인 실패, 아이디와 비밀번호를 다시 확인하세요\n");    			
+    		}
+    	} //end of while
     	
 		while(run) {
 			System.out.println("\n1. 도서등록 | 2. 수정 | 3. 삭제 | 4. 목록 | 5. 상세 조회 |"

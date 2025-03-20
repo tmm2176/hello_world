@@ -84,7 +84,7 @@ public class Book {
 			return show;
 	}
 	public void showBookInfo() {
-		System.out.println("No. " + orderNo + " | 도서명 : " + bookName + " | 저자 : " + author +
+		System.out.println("도서코드 : " + bookCode + " | 도서명 : " + bookName + " | 저자 : " + author +
 				" | 출판사 : " + publisher + " | 가격 : " + price);
 	}
 	public void setBookInfo(String bookCode, String bookName, String author, String publisher, int price){

@@ -27,7 +27,7 @@ public class BookJdbc {
 			e.printStackTrace();
 		}
 		return null;
-	}
+	} //end of getConnect()
 	
 	// 추가
 	public boolean insert(Book book) {
@@ -130,7 +130,7 @@ public class BookJdbc {
 				Book book = new Book();
 				book.setAuthor(rs.getString("author")); //getString("col_name")
 				book.setBookCode(rs.getString("book_code"));
-				book.setPublisher("company");
+				book.setPublisher(rs.getString("company"));
 				book.setPrice(rs.getInt("price"));
 				book.setBookName(rs.getString("book_title"));
 				list.add(book); // 컬렉션저장
@@ -156,7 +156,7 @@ public class BookJdbc {
 				Book book = new Book();
 				book.setAuthor(rs.getString("author")); //getString("col_name")
 				book.setBookCode(rs.getString("book_code"));
-				book.setPublisher("company");
+				book.setPublisher(rs.getString("company"));
 				book.setPrice(rs.getInt("price"));
 				book.setBookName(rs.getString("book_title"));
 				return book; // 컬렉션저장

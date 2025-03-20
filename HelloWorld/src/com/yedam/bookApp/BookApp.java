@@ -1,6 +1,10 @@
 package com.yedam.bookApp;
 
 import java.util.List;
+import java.util.Map;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /*
  * 실행클래스(main 메소드)
@@ -8,6 +12,14 @@ import java.util.List;
 
 public class BookApp {
 	public static void main(String[] args) {
+		
+		// 250320 입력 데이터 확인
+//		MemberJdbc dao = new MemberJdbc();
+//		List<Map<String, String>> list = dao.memberList();
+//		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+//		String json = gson.toJson(list);
+//		System.out.println(json.toString());
+		// 250320 입력데이터확인
 		
 //		Book book = new Book();
 //		book.setBookName("샘플1");
@@ -65,8 +77,11 @@ public class BookApp {
 		/*
 		 * 방법 2 (싱글톤)
 		 */
+		//BookJdbc 250319
 		BookMain mainApp1 = BookMain.getInstance();
 		mainApp1.main(args);
+		//BookJdbc 250319
+		
 //		BookMain mainApp2 = BookMain.getInstance();
 		
 //		mainApp1.addFunc(); // 1번 객체에 등록

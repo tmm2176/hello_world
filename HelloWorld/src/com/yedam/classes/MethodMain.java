@@ -11,13 +11,14 @@ public class MethodMain {
 	} // end of main()
 	
 	static void officeApp() {
-		MethodExe2 m2 = new MethodExe2();
+		MethodExe2 m2 = new MethodExe2(); // 기능정의
 		// 사용자입력 받아서 1. 목록, 2. 추가, 3. 수정, 4.삭제 구현
 		// 입력메세지 정의 구현
 		String inputProdCode = "";
 		String inputProdName = "";
 		int inputProdPrice = 0;
 		Product newProd = new Product();
+		int menu = 0;
 		
 		Scanner scn = new Scanner(System.in);
 		
@@ -26,12 +27,12 @@ public class MethodMain {
 			System.out.println("원하는 메뉴를 입력하세요");
 			System.out.println("1. 목록 | 2. 추가 | 3. 수정 | 4. 삭제 | 0. 종료");
 		    System.out.print("선택 >> ");
-		    int menu = Integer.parseInt(scn.nextLine());
+		    menu = Integer.parseInt(scn.nextLine());
 		    
 		    switch (menu) {
 			case 1: // 목록 조회
 				System.out.println("상품 목록을 조회합니다");
-				System.out.print("상품 이름을 입력해주세요 (모든 상품 조회 : ALL) >> ");
+				System.out.print("상품 이름을 입력해주세요 (모든 상품 조회 : Enter) >> ");
 				inputProdName = scn.nextLine();
 				
 				System.out.print("금액입력 (입력한 금액 이상의 상품만 출력) >> ");
@@ -99,12 +100,13 @@ public class MethodMain {
 				break; // end of case4
 			case 0:
 				run = false; //프로그램 종료
+				m2.save(); //프로그램 종료하면서 기록된 내용 저장
 				break; // end of case0
 			default:
 				break; // end of default
-			}
+			} // end of switch
 		    
-		} // end of while
+		} // end of loop
 		System.out.println("end of prog.");
 	} // end of officeApp()
 	
@@ -181,6 +183,7 @@ public class MethodMain {
 //      m3.printStar(5, "%");
 		m3.printCard();
     } // end of method3
+    
     void method4() {
 //		MethodExe4 m4 = new MethodExe4();
 		MethodExe4.main();
@@ -189,5 +192,6 @@ public class MethodMain {
     void method5() {
     	System.out.println("미리 만든거임");
     } // end of method5
+    
 } // end of class MethodMain
 

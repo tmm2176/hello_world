@@ -120,7 +120,6 @@ public class BookJdbc {
 		String sql = "SELECT * FROM tbl_book " //
 				+ "where company = nvl(?, company) " //
 				+ "order by book_code";
-		
 		try {
 			PreparedStatement psmt = conn.prepareStatement(sql);
 			psmt.setString(1,  company);

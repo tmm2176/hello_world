@@ -145,7 +145,6 @@ public class BookJdbc {
 		Connection conn = getConnect();
 		String sql = "SELECT * FROM tbl_book " //
 				+ "where book_code = ?"; //중복값을 제외하는 코드
-		
 		try {
 			PreparedStatement psmt = conn.prepareStatement(sql);
 			psmt.setString(1,  bcode);

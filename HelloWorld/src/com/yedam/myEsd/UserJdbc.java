@@ -5,6 +5,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserJdbc {
 	// Connection 생성
@@ -15,7 +18,7 @@ public class UserJdbc {
 
 		try {
 			Connection conn = DriverManager.getConnection(url, userId, userPw);
-			System.out.println("접속성공체크");
+			// System.out.println("접속성공체크");
 			return conn;
 		} catch (SQLException e) {
 			//System.out.println("접속실패체크");
@@ -54,4 +57,106 @@ public class UserJdbc {
 		//System.out.println("체크포인트3");
 		return null; // 조회 실패 시
 	} // end of logInDB()
-}
+	
+	// 목록조회
+	public List<User> showUserList(String id) {
+		List<User> list = new ArrayList<User>();
+		Connection conn = getConnect();
+		String sql = "SELECT * "
+				+ "FROM tbl_user "
+				+ "WHERE user_id = nvl(?, user_id)";
+		try {
+			PreparedStatement psmt = conn.prepareStatement(sql);
+			psmt.setString(1,  id);
+			
+			ResultSet rs = psmt.executeQuery(); // 조회
+			while(rs.next()) {
+				User user = new User();
+				user.setUserId(rs.getString("user_id"));
+				user.setPassword(rs.getString("password"));
+				user.setUserName(rs.getString("user_name"));
+				user.setUserStatus(rs.getString("status"));
+				user.setRegistrationDate(rs.getDate("registration").toString());
+				list.add(user); // 컬렉션저장
+			} // end of while
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	} // end of showGameList
+	
+	
+	// 추가
+	public boolean insert(User user) {
+		// DB에 접근하는 코드들은 정형화된 코드임
+		Connection conn = getConnect();
+		String sql = "INSERT INTO tbl_user "
+				+ "(user_id, password, user_name,"
+				+ "status, registration) "
+				+ "VALUES(?, ?, ?, ?, ?)";
+		try {
+			//Statement stmt = conn.createStatement();
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, user.getUserId());
+			stmt.setString(2, user.getPassword());
+			stmt.setString(3, user.getUserName());
+			stmt.setString(4, user.getUserStatus());
+			stmt.setString(5, user.getRegistrationDate());
+			int r = stmt.executeUpdate();
+			if (r > 0) {
+				return true; // 등록성공
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false; // 등록실패
+	} // end of insert()
+	
+	// 수정
+	public boolean update(User user) {
+		Connection conn = getConnect();
+		String sql = "UPDATE tbl_user "
+				+ "SET    user_id      = nvl(?, user_id), "
+				+ "       password     = nvl(?, password), "
+				+ "       user_name    = nvl(?, user_name), "
+				+ "       status       = nvl(?, status), "
+				+ "       registration = nvl(?, registration) "
+				+ "WHERE  user_id      = ? ";
+		try {
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, user.getUserId());
+			stmt.setString(2, user.getPassword());
+			stmt.setString(3, user.getUserName());
+			stmt.setString(4, user.getUserStatus());
+			stmt.setString(5, user.getRegistrationDate());
+			stmt.setString(6, user.getUserId());
+			
+			int r = stmt.executeUpdate();
+			if (r > 0) {
+				return true; // 수정성공
+			}
+		} catch (SQLException e) {
+			//e.printStackTrace();
+		}
+		return false; // 수정실패
+	} // end of update()
+	
+	// 삭제
+	public boolean delete(User user) {
+		Connection conn = getConnect();
+		String sql = "DELETE FROM tbl_user "
+				+ "Where user_id = '"
+				+ user.getUserId() + "'";
+		
+		try {
+			Statement stmt = conn.createStatement();
+			int r = stmt.executeUpdate(sql);
+			if (r > 0) {
+				return true; // 삭제성공
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false; // 삭제실패
+	} // end of delete
+} // end of class

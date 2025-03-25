@@ -6,14 +6,19 @@ public class User {
 	private String userName;
 	private String userStatus; // normal / VIP / dormant(휴면) / banned 
 	private String registrationDate;
+	//private Game[] library;
 	
+	public User() {}
 	public User(String userId, String password, String userName, String status, String registrationDate) {
 		this.userId = userId;
 		this.userName = userName;
 		this.password = password;
 		this.userStatus = status;
 		this.registrationDate = registrationDate;
+		//this.library = null;
 	}
+
+
 
 	public String getUserId() {
 		return userId;
@@ -30,6 +35,9 @@ public class User {
 	public String getRegistrationDate() {
 		return registrationDate;
 	}
+//	public Game[] getLibrary() {
+//		return library;
+//	}
 	
 	public void setUserId(String userId) {
 		this.userId = userId;
@@ -41,9 +49,25 @@ public class User {
 		this.password = password;
 	}
 	public void setUserStatus(String userStatus) {
-		this.userStatus = userStatus;
+		if(userStatus.equals("normal") || userStatus.equals("VIP") //
+				|| userStatus.equals("dormant") || userStatus.equals("banned")) {
+			this.userStatus = userStatus;
+		}
+		else if(!(userStatus.equals("normal") || userStatus.equals("VIP") //
+		|| userStatus.equals("dormant") || userStatus.equals("banned"))) {
+			System.out.println("회원의 상태는 normal, VIP, dormant, banned 4개 중 하나로 입력해주세요");
+		}
 	}
 	public void setRegistrationDate(String registrationDate) {
 		this.registrationDate = registrationDate;
 	}
+//	public void setLibrary(Game[] library) {
+//		this.library = library;
+//	}
+	
+	public String showList() {
+		String show = String.format("%-10s | %-10s | %-10s | %-20s | %-30s"
+				, userId, password, userName, userStatus, registrationDate);
+		return show;
+    } //end of showList()
 } // end of Class

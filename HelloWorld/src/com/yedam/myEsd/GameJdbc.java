@@ -32,26 +32,29 @@ public class GameJdbc {
 		Connection conn = getConnect();
 		String sql = "SELECT * "
 				+ "FROM tbl_game "
-				+ "WHERE game_code = nvl(?, game_code)";
+				+ "WHERE game_code = nvl(?, game_code) "
+				+ "ORDER BY          game_code ";
 		try {
 			PreparedStatement psmt = conn.prepareStatement(sql);
 			psmt.setString(1,  code);
 			
 			Game game = new Game();
 			ResultSet rs = psmt.executeQuery(); // 조회
-			if (rs.next()) {
+			
+			if (!rs.next()) {
+				return null;
+			}
+			else {
 				game.setGameCode(rs.getString("game_code"));
 				game.setGameName(rs.getString("game_name"));
 				game.setGameTag(rs.getString("game_tag"));
 				game.setGameInfo(rs.getString("game_info"));
 				game.setDeveloper(rs.getString("developer"));
 				game.setDistributor(rs.getString("distributor"));
-				game.setRegistration(rs.getString("registration"));
+				game.setRegistration(rs.getDate("registration").toString());
 				game.setPrice(rs.getInt("price"));
 				game.setDiscount(rs.getInt("discount"));
 				game.setScore(rs.getInt("score"));
-			} else {
-				return null;
 			}
 			return game;
 		} catch (SQLException e) {
@@ -112,7 +115,7 @@ public class GameJdbc {
 				game.setGameInfo(rs.getString("game_info"));
 				game.setDeveloper(rs.getString("developer"));
 				game.setDistributor(rs.getString("distributor"));
-				game.setRegistration(rs.getString("registration"));
+				game.setRegistration(rs.getDate("registration").toString());
 				game.setPrice(rs.getInt("price"));
 				game.setDiscount(rs.getInt("discount"));
 				game.setScore(rs.getInt("score"));
@@ -197,12 +200,11 @@ public class GameJdbc {
 	} // end of update()
 	
 	// 삭제
-	public boolean delete(Game game) {
+	public boolean delete(String gCode) {
 		Connection conn = getConnect();
 		String sql = "DELETE FROM tbl_game "
 				+ "Where game_code = '"
-				+ game.getGameCode() + "'";
-		
+				+ gCode + "'";
 		try {
 			Statement stmt = conn.createStatement();
 			int r = stmt.executeUpdate(sql);

@@ -127,16 +127,18 @@ public class UserLibJdbc {
 		return false; // 등록실패
 	} // end of insert()
 	
-	// 라이브러리 삭제
+	// 라이브러리 삭제 (단일)
 	public boolean delete(String gCode, String uID) {
 		Connection conn = getConnect();
 		String sql = "DELETE FROM user_library "
-				+ "WHERE game_code = nvl(?, game_code) "
-				+ "AND   user_id   = nvl(?, user_id) ";
+				+ "WHERE game_code = '"
+				+ gCode + "' "
+				+ "AND   user_id   = '"
+				+ uID + "'";
 		try {
 			PreparedStatement psmt = conn.prepareStatement(sql);
-			psmt.setString(1,  gCode);
-			psmt.setString(2,  uID);
+//			psmt.setString(1,  gCode);
+//			psmt.setString(2,  uID);
 			
 			int r = psmt.executeUpdate(sql);
 			if (r > 0) {
@@ -147,4 +149,25 @@ public class UserLibJdbc {
 		}
 		return false; // 삭제 실패
 	} // end of delete()
+	
+	// 라이브러리 삭제 (선택 게임 전체)
+	public boolean deleteAllUserLib(String gCode) {
+		Connection conn = getConnect();
+		String sql = "DELETE FROM user_library "
+				+ "WHERE game_code = '"
+				+ gCode + "' ";
+		System.out.println("체크포인트 게임삭제 전");
+		try {
+			Statement psmt = conn.prepareStatement(sql);
+			int r = psmt.executeUpdate(sql);
+			System.out.println("체크포인트 게임 삭제 후");
+			
+			if (r > 0) {
+				return true; // 삭제성공
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false; // 삭제 실패
+	} // end of deleteAllUserLib()
 } // end of class

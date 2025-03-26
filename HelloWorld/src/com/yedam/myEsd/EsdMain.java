@@ -112,14 +112,16 @@ public class EsdMain {
 	public static void gDelF() {		
 		System.out.print("삭제할 게임의 코드 입력>> ");
 		String gCode = scn.nextLine();
-		Game game = new Game();
-		game.setGameCode(gCode);
 		
-		if (gDao.delete(game)) {
+		System.out.println("체크포인트 라이브러리 삭제 전");
+		ulDao.deleteAllUserLib(gCode);
+		System.out.println("체크포인트 라이브러리 삭제 후");
+		if (gDao.delete(gCode)) {
 			System.out.println("삭제성공\n");
 		}else {
 			System.out.println("삭제실패\n");
 		}
+		System.out.println("체크포인트 게임삭제 후");
 	} // end of gDelF()
 	
 	// 관리자 게임관리 - 하나 상세정보
@@ -129,10 +131,10 @@ public class EsdMain {
 		
 		if (gDao.showGameInputCode(gCode) != null) {
 			System.out.println("조회성공\n");
-//			System.out.println(gameSearchList(gCode).showAllInfo());
-			for(Game game : gameSearchList(gCode)) {
-				System.out.println(game.showAllInfo());
-			}
+			System.out.println(gDao.showGameInputCode(gCode).showAllInfo());
+//			for(Game game : gameSearchList(gCode)) {
+//				System.out.println(game.showAllInfo());
+//			}
 		}else {
 			System.out.println("조회실패\n");
 		}		
@@ -402,11 +404,11 @@ public class EsdMain {
 	
 	// 사용자모드 - 게임상점 - 검색페이지
     public static void uStoreSearch() {
-    	System.out.println("\n검색할 게임의 이름을 입력하세요");
-    	System.out.print("게임 이름>> ");
+    	System.out.println("\n검색할 게임의 코드 입력하세요");
+    	System.out.print("게임 코드>> ");
     	String inputGCode = scn.nextLine();
     	Game searchGame = gDao.showGameInputCode(inputGCode);
-    	if(searchGame.getGameName() == null) {
+    	if(searchGame == null) {
     		System.out.println("검색한 게임을 찾지 못했습니다");
     	} else if (searchGame.getGameName() != null) {
     		System.out.println("검색 결과");
@@ -486,12 +488,12 @@ public class EsdMain {
 	// 구현필요
 	
 	// 사용자모드 - 라이브러리 - 환불받기
-	public static void userRefund(String uId) {
+	public static void userRefund(String uID) {
 		System.out.println("환불받을 게임의 코드를 입력하세요");
 		System.out.print(">> ");
 		String gCode = scn.nextLine();
-		if(ulDao.delete(uId, gCode)) {
-			System.out.println("환불 성공/n");
+		if(ulDao.delete(gCode, uID)) {
+			System.out.println("환불 성공\n");
 		} else {
 			System.out.println("환불 실패, 다시 확인해주세요");
 		}
@@ -532,7 +534,7 @@ public class EsdMain {
 				case 2: // 2. 상세조회
 				    System.out.println("구현 중");
 					break; // case 2 종료		
-				case 3: // 3. 환불받기(미구현)
+				case 3: // 3. 환불받기
 					userRefund(uID);
 					break; // case 3 종료.
 				case 0: // 0. 종료

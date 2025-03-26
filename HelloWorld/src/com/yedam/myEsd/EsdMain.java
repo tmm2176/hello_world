@@ -1,5 +1,6 @@
 package com.yedam.myEsd;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
@@ -11,7 +12,8 @@ public class EsdMain {
 	static Scanner scn = new Scanner(System.in); // scn 처리
 	static GameJdbc gDao = new GameJdbc();
 	static UserJdbc uDao = new UserJdbc();
-		
+	static UserLibJdbc ulDao = new UserLibJdbc();
+	
 	//로그인 함수
 	public static User logInFunc(String id, String pw) {
 		return uDao.logInDB(id, pw); // GameJdbc클래스의 logInFunc
@@ -41,7 +43,7 @@ public class EsdMain {
 		String gDev = scn.nextLine();
 		System.out.print("유통사>> ");
 		String gDist = scn.nextLine();
-		System.out.print("등록일>> ");
+		System.out.print("출시일>> ");
 		String gRegist = scn.nextLine();
 		System.out.print("가격>> ");
 		int gPrice = Integer.parseInt(scn.nextLine());
@@ -125,7 +127,7 @@ public class EsdMain {
 		System.out.print("검색 게임코드>> ");
 		String gCode = scn.nextLine();
 		
-		if (gameSearchList(gCode) != null) {
+		if (gDao.showGameInputCode(gCode) != null) {
 			System.out.println("조회성공\n");
 //			System.out.println(gameSearchList(gCode).showAllInfo());
 			for(Game game : gameSearchList(gCode)) {
@@ -142,7 +144,8 @@ public class EsdMain {
 		while(run) {
 			List<Game> list = gameSearchList("");
 			System.out.println("==============================================================================");
-			String colName = String.format("%-30s | %-15s | %-7s | %-3s", "Name", "Tag", "Price", "Score");
+			String colName = String.format("%-5s | %-30s | %-15s | %-7s | %-3s"
+					,"Code " ,"Name", "Tag", "Price", "Score");
 			System.out.println(colName);
 			System.out.println("==============================================================================");
 			for(Game game : list) {
@@ -199,7 +202,6 @@ public class EsdMain {
 		// 유저 상태의 기본값 normal
 		System.out.print("등록일>> ");
 		String registration = scn.nextLine();
-		
 		
 		User userInfo = new User(userId, userPw, userName, "normal", registration);
 		
@@ -375,22 +377,52 @@ public class EsdMain {
     
 
 	// 사용자모드 - 게임상점 - 구매페이지
-	public static void uBuyGame() {
+	public static void uBuyGame(String uID) {
+		System.out.print("구매할 게임의 코드를 입력하세요>> ");
+		String inputCode = scn.nextLine();
 		
-	}
+		UserLibrary ulib = new UserLibrary();
+		// 추가필요 (외래키 조건에 맞지 않는 값을 받은 경우 예외처리)
+		if(gDao.showGameInputCode(inputCode) != null //
+				&& !(ulDao.checkMyGame(uID, inputCode))) {	
+			ulib.setUserId(uID);
+			ulib.setGameCode(inputCode);
+			// 추가필요 (구입확인문구)
+			if(ulDao.insert(ulib)) {
+				System.out.println("정상적으로 구입에 성공하였습니다\n");				
+		    } else if (!ulDao.insert(ulib)) {
+				System.out.println("구입 실패. 다시 확인해주세요\n");
+			}	
+		} else if(ulDao.checkMyGame(uID, inputCode)) {
+			System.out.println("이미 보유중인 게임입니다\n");
+		} else if (gDao.showGameInputCode(inputCode) == null) {
+			System.out.println("입력한 코드의 게임이 존재하지 않습니다\n");
+		}
+	} // end of uBuyGame
 	
 	// 사용자모드 - 게임상점 - 검색페이지
     public static void uStoreSearch() {
-		
+    	System.out.println("\n검색할 게임의 이름을 입력하세요");
+    	System.out.print("게임 이름>> ");
+    	String inputGCode = scn.nextLine();
+    	Game searchGame = gDao.showGameInputCode(inputGCode);
+    	if(searchGame.getGameName() == null) {
+    		System.out.println("검색한 게임을 찾지 못했습니다");
+    	} else if (searchGame.getGameName() != null) {
+    		System.out.println("검색 결과");
+    		System.out.println(searchGame.showList());
+    	}
 	}
 	
 	// 사용자모드 - 게임상점 함수
-	public static void userGameStore() {
+	public static void userGameStore(String uID) {
 		boolean run = true;
 		while(run) {
 			List<Game> list = gameSearchList("");
-			System.out.println("==============================================================================");
-			String colName = String.format("%-30s | %-15s | %-7s | %-3s", "Name", "Tag", "Price", "Score");
+			
+			System.out.println("\n==============================판매중인 게임 목록입니다==============================");
+			String colName = String.format("%-5s | %-30s | %-15s | %-7s | %-3s"
+					,"Code " ,"Name", "Tag", "Price", "Score");
 			System.out.println(colName);
 			System.out.println("==============================================================================");
 			for(Game game : list) {
@@ -414,7 +446,7 @@ public class EsdMain {
 			
 			switch(menu) {
 			case 1: // 1. 게임구매
-				uBuyGame();
+				uBuyGame(uID);
 				break; // case 1 종료	
 			case 2: // 2. 검색
 				uStoreSearch();
@@ -428,26 +460,113 @@ public class EsdMain {
 		} // end of loop
 	} // end of userGameStore()
 	
+	// 사용자모드 - 라이브러리 - 게임실행
+	public static void userPlayGame(String uID) {
+		Boolean play = true;
+	    while(play) {
+	    	System.out.println("실행할 게임의 코드를 입력하세요");
+	    	System.out.print(">> ");
+	    	String gCode = scn.nextLine();
+	    	if(ulDao.checkMyGame(uID, gCode)) {
+	    		System.out.println("게임이 실행중입니다 (종료 : stop)");
+	    		System.out.print(">> ");
+	    		String gamePlay = scn.nextLine();
+	    		if(gamePlay.equals("stop")) {
+	    			System.out.println("게임을 종료합니다\n");
+	    			play = false;
+	    		} // end of if				    		
+	    	} else if(!(ulDao.checkMyGame(uID, gCode))) {
+	    		System.out.println("보유중이지 않거나 존재하지않는 게임입니다\n");
+	    		play = false;
+	    	}
+	    } // end of loop
+	} // end of userPlayGame()
+	
+	// 사용자모드 - 라이브러리 - 상세조회
+	// 구현필요
+	
+	// 사용자모드 - 라이브러리 - 환불받기
+	public static void userRefund(String uId) {
+		System.out.println("환불받을 게임의 코드를 입력하세요");
+		System.out.print(">> ");
+		String gCode = scn.nextLine();
+		if(ulDao.delete(uId, gCode)) {
+			System.out.println("환불 성공/n");
+		} else {
+			System.out.println("환불 실패, 다시 확인해주세요");
+		}
+	} //end of userRefund() 
+	
 	// 사용자모드 - 라이브러리 함수
-	public static void users() {
-		System.out.println("구현중");
+	public static void userLibrary(String uID) {
+		List<UserLibrary> MyGameList = ulDao.showUserLibrary(uID);
+		if(MyGameList == null) {
+			System.out.println("라이브러리에 게임이 없습니다.");
+		} else if(MyGameList != null) {
+			System.out.println("\n==============================보유중인 게임 목록입니다==============================");
+			for(UserLibrary uLib : MyGameList) {
+				System.out.println(gDao.showGameInputCode(uLib.getgameCode()).showList());
+			} // end of loop
+			System.out.println("==============================================================================");
+			Boolean run = true;
+			int menu = 0;
+			while(run) {
+				System.out.println("\n게임실행 : 1 | 상세조회 : 2 | 환불받기 : 3 | 메뉴돌아가기 : 0");
+				System.out.print("선택 >> ");
+				while(true) {
+					try {
+						menu = Integer.parseInt(scn.nextLine());
+						break;
+					}
+					catch (NumberFormatException e) {
+						System.out.println("menu에 맞는 숫자를 입력해주세요");
+						System.out.println("\n게임실행 : 1 | 상세조회 : 2 | 환불받기 : 3 | 메뉴돌아가기 : 0");
+						System.out.print("선택 >> ");
+					}				
+				} //end of loop
+				
+				switch(menu) {
+				case 1: // 1. 게임실행
+					userPlayGame(uID);
+					break; // case 1 종료	
+				case 2: // 2. 상세조회
+				    System.out.println("구현 중");
+					break; // case 2 종료		
+				case 3: // 3. 환불받기(미구현)
+					userRefund(uID);
+					break; // case 3 종료.
+				case 0: // 0. 종료
+					run = false;
+					break;
+				default:
+					System.out.println("잘못된 입력입니다. 메뉴를 다시 선택하세요\n");
+				} // end of switch
+			} //end of loop
+			
+		} System.out.println();
+		
 	} // end of userLibrary()
 	
 	// 사용자모드 - 마이페이지 함수
-	public static void userMyPage() {
+	public static void userMyPage(String uID) {
 		System.out.println("구현중");
 	} // end of userMyPage()
 
 	// 사용자모드 - 구매내역 
-	public static void userPurchaseList() {
-		System.out.println("구현중");
+	public static void userPurchaseList(String uID) {
+		System.out.println("미구현");
 	} // end of userPurchaseList()
 
 	// 사용자모드 - 찜목록
-	public static void userWishList() {
+	public static void userWishList(String uID) {
 		System.out.println("미구현");
 	} // end of userWishList()
 
+	// 사용자모드 - 문의하기
+	public static void userHelp(String uID) {
+		System.out.println("미구현");
+	} // end of userHelp
+	
 	// 사용자모드 실행 함수
 	public static void userF(User user) {
 		boolean run = true;
@@ -478,19 +597,22 @@ public class EsdMain {
 				
 				switch(menu) {
 				case 1: // 1. 게임상점
-				userGameStore();
+				    userGameStore(user.getUserId());
 					break; // case 1 종료	
 				case 2: // 2. 라이브러리
-				userLibrary();
+				    userLibrary(user.getUserId());
 					break; // case 2 종료		
-				case 3: // 3. 마이페이지
-				userMyPage(); 
+				case 3: // 3. 마이페이지 (
+				    userMyPage(user.getUserId()); 
 					break; // case 3 종료
-				case 4: // 4. 구매내역
-				userPurchaseList();
-					break; // case 4 종료.
+				case 4: // 4. 구매내역 (미구현)
+				    userPurchaseList(user.getUserId());
+					break; // case 4 종료
 				case 5: // 5. 찜목록 (미구현)
-				userWishList();
+				    userWishList(user.getUserId());
+					break; // case 5 종료
+				case 6: // 6. 문의하기 (미구현)
+				    userHelp(user.getUserId());
 					break; // case 5 종료.
 				case 0: // 0. 종료
 					run = false;
@@ -502,11 +624,32 @@ public class EsdMain {
 		} //end of if
 	} // end of userF()
 	
+	// 회원가입 함수
+	public static void signUpF() {
+		System.out.println("회원가입 화면입니다");
+		System.out.print("사용할 ID를 입력하세요>> ");
+		String userId = scn.nextLine();
+		System.out.print("사용할 PW를 입력하세요>> ");
+		String userPw = scn.nextLine();
+		System.out.print("이름을 입력하세요>> ");
+		String userName = scn.nextLine();
+		// 유저 상태의 기본값 normal
+		// 가입일은 오늘로
+		
+		User userInfo = new User(userId, userPw, userName);
+		
+		if(uDao.insert(userInfo)) {
+			System.out.println("가입성공\n");
+		}else {
+			System.out.println("가입실패. 입력 정보를 다시 확인하세요\n");
+		}
+	}
+	
 	public static void main(String[] args) {
 		//앱을 실행하는 클래스
 
-		String playType = "normal"; //admin, normal, endOfProg 
-				
+		String playType = "normal"; //admin, normal, signUp, endOfProg
+		
 		boolean logIn = true;
 		User user = new User();
 		while(logIn) {
@@ -515,7 +658,10 @@ public class EsdMain {
     		if(inputId.equals("stop")) {
     			playType = "endOfProg";
     			break;
-    		} 
+    		} else if (inputId.equals("sign up")) {
+    			playType = "signUp";
+    			break;
+    		}
     		System.out.print("PW 입력 >> ");
     		String inputPw = scn.nextLine();    		
     		
@@ -544,6 +690,8 @@ public class EsdMain {
 			adminF();
 		} else if (playType.equals("normal")) { // 일반사용자
 			userF(user);
+		} else if(playType.equals("signUp")) { //회원가입
+			signUpF();
 		} else if (playType.equals("endOfProg")) { // 프로그램종료
 			System.out.println("프로그램을 종료합니다");
 		}

@@ -1,21 +1,28 @@
 package com.yedam.myEsd;
 
+import java.time.LocalDate;
+
 public class User {
 	private String userId;
 	private String password;
 	private String userName;
 	private String userStatus; // normal / VIP / dormant(휴면) / banned 
 	private String registrationDate;
-	//private Game[] library;
 	
 	public User() {}
+	public User(String userId, String password, String userName) {
+		this.userId = userId;
+		this.userName = userName;
+		this.password = password;
+		this.userStatus = "normal";
+		this.registrationDate = (LocalDate.now()).toString();
+	}
 	public User(String userId, String password, String userName, String status, String registrationDate) {
 		this.userId = userId;
 		this.userName = userName;
 		this.password = password;
 		this.userStatus = status;
 		this.registrationDate = registrationDate;
-		//this.library = null;
 	}
 
 
@@ -35,9 +42,6 @@ public class User {
 	public String getRegistrationDate() {
 		return registrationDate;
 	}
-//	public Game[] getLibrary() {
-//		return library;
-//	}
 	
 	public void setUserId(String userId) {
 		this.userId = userId;
@@ -61,9 +65,6 @@ public class User {
 	public void setRegistrationDate(String registrationDate) {
 		this.registrationDate = registrationDate;
 	}
-//	public void setLibrary(Game[] library) {
-//		this.library = library;
-//	}
 	
 	public String showList() {
 		String show = String.format("%-10s | %-10s | %-10s | %-20s | %-30s"

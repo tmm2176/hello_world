@@ -103,26 +103,19 @@ public class Game {
 	}
 	// 간단한 소개
 	public String showList() {
-		String show = String.format("%-30s | %-15s | %-7d | %-3d", gameName, gameTag, price, score);
+		String show = String.format("%-5s | %-30s | %-15s | %-7d | %-3d",
+				gameCode ,gameName, gameTag, price, score);
 		return show;
     } //end of showList()
 	// (게임 코드 제외) 모든 정보 반환
 	public String showAllInfo() {
-//		String show = String.format("%-10s %-10s | %-10s %-10s \n %-10s %-10d | %-10s %-10d \n"
-//				+ "%-10s %-10s | %-10s %-10s \n %-10s %-10d \n %-10s %-10s",
-//				"게임명 : ", gameName, "태그 : ", gameTag,
-//				"현재 적용 할인률 : ", discount, "평점 : ", score,
-//				"개발사 : ", developer, "유통사 : ", distributor,
-//				"가격 : ", price,
-//				"간단한 소개 : " + gameInfo
-//				);
-		String st = String.format("%-20s %-30s | %-7s %-20s\n%-20s %-30s | %-7s %-20d\n"
+		String show = String.format("%-20s %-10s\n%-20s %-30s | %-7s %-20s\n%-20s %-30s | %-7s %-20d\n"
 				+ "%-20s %-30d | %-7s %-20d\n%-20s %-30s | %-7s %-20s\n"
 				+ "%-20s %-30s\n", 
 				
-				"Name : ", gameName, "Tag : ", gameTag, "Release : ", registration, "Price : ", price,
+				"Code : ", gameCode, "Name : ", gameName, "Tag : ", gameTag, "Release : ", registration, "Price : ", price,
 				"discount(%) : ", discount, "score : ", score, "developer : ", developer, "distriubutor : ", distributor,
 				"About This Game : ", gameInfo);
-		return st; 
+		return show; 
     } //end of showAllInfo()
 } // end of class

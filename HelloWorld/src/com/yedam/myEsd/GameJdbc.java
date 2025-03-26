@@ -27,10 +27,8 @@ public class GameJdbc {
 		return null;
 	} //end of getConnect()
 	
-	
-	// 목록조회
-	public List<Game> showGameList(String code) {
-		List<Game> list = new ArrayList<Game>();
+	// 목록조회 (단일, 게임코드 입력)
+	public Game showGameInputCode(String code) {
 		Connection conn = getConnect();
 		String sql = "SELECT * "
 				+ "FROM tbl_game "
@@ -38,6 +36,72 @@ public class GameJdbc {
 		try {
 			PreparedStatement psmt = conn.prepareStatement(sql);
 			psmt.setString(1,  code);
+			
+			Game game = new Game();
+			ResultSet rs = psmt.executeQuery(); // 조회
+			if (rs.next()) {
+				game.setGameCode(rs.getString("game_code"));
+				game.setGameName(rs.getString("game_name"));
+				game.setGameTag(rs.getString("game_tag"));
+				game.setGameInfo(rs.getString("game_info"));
+				game.setDeveloper(rs.getString("developer"));
+				game.setDistributor(rs.getString("distributor"));
+				game.setRegistration(rs.getString("registration"));
+				game.setPrice(rs.getInt("price"));
+				game.setDiscount(rs.getInt("discount"));
+				game.setScore(rs.getInt("score"));
+			} else {
+				return null;
+			}
+			return game;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} return null;
+	} // end of showGame
+	
+	// 목록조회 (단일, 게임이름 입력)
+	public Game showGameInputName(String gName) {
+		List<Game> list = new ArrayList<Game>();
+		Connection conn = getConnect();
+		String sql = "SELECT * "
+				+ "FROM tbl_game "
+				+ "WHERE game_name = nvl(?, game_name)";
+		try {
+			PreparedStatement psmt = conn.prepareStatement(sql);
+			psmt.setString(1,  gName);
+			
+			Game game = new Game();
+			ResultSet rs = psmt.executeQuery(); // 조회
+			while(rs.next()) {
+				game.setGameCode(rs.getString("game_code"));
+				game.setGameName(rs.getString("game_name"));
+				game.setGameTag(rs.getString("game_tag"));
+				game.setGameInfo(rs.getString("game_info"));
+				game.setDeveloper(rs.getString("developer"));
+				game.setDistributor(rs.getString("distributor"));
+				game.setRegistration(rs.getString("registration"));
+				game.setPrice(rs.getInt("price"));
+				game.setDiscount(rs.getInt("discount"));
+				game.setScore(rs.getInt("score"));
+				list.add(game); // 컬렉션저장
+			} // end of while
+			return game;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} return null;
+	} // end of showGame
+	
+	// 목록조회 (다수의 게임 / 매개변수 바꿔야하긴함, code는 고유값이라 공백아니면 하나만 나옴)
+	public List<Game> showGameList(String code) {
+		List<Game> list = new ArrayList<Game>();
+		Connection conn = getConnect();
+		String sql = "SELECT * "
+				+ "FROM  tbl_game "
+				+ "WHERE game_code = nvl(?, game_code) "
+				+ "ORDER BY          game_code ";
+		try {
+			PreparedStatement psmt = conn.prepareStatement(sql);
+			psmt.setString(1, code);
 			
 			ResultSet rs = psmt.executeQuery(); // 조회
 			while(rs.next()) {
@@ -55,7 +119,8 @@ public class GameJdbc {
 				list.add(game); // 컬렉션저장
 			} // end of while
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//System.out.println("체크포인트");
+			return null;
 		}
 		return list;
 	} // end of showGameList
@@ -148,6 +213,5 @@ public class GameJdbc {
 			e.printStackTrace();
 		}
 		return false; // 삭제실패
-	} // end of delete
-	
+	} // end of delete()
 } // end of class

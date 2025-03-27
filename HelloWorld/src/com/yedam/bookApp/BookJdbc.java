@@ -16,7 +16,7 @@ public class BookJdbc {
 	
 	// Connection 생성
 	Connection getConnect() {
-		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String url = "jdbc:oracle:thin:@192.168.0.30:1521:xe";
 		String userId = "scott";
 		String userPw = "tiger";
 
@@ -62,7 +62,7 @@ public class BookJdbc {
 	
 	// 수정
 	public boolean update(Book book) {
-		System.out.println(book);
+//		System.out.println(book);
 		Connection conn = getConnect();
 //		String sql = "UPDATE tbl_book\r\n"
 //				+ "SET    book_title = '"+ book.getBookName() +"',\r\n"

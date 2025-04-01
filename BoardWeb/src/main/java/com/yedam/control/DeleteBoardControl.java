@@ -1,7 +1,6 @@
 package com.yedam.control;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,24 +13,24 @@ import com.yedam.common.DataSource;
 import com.yedam.mapper.BoardMapper;
 import com.yedam.vo.BoardVO;
 
-public class BoardControl implements Control{
+public class DeleteBoardControl implements Control {
 
 	@Override
 	public void exec(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 글 목록 정보 -> jsp
 		String bno = req.getParameter("bno");
-		String page = req.getParameter("page");
+		BoardVO board = new BoardVO();
+		board.setBoardNo(Integer.parseInt(bno));
 		
-		SqlSession sqlSession = DataSource.getInstance().openSession();
+		// 삭제처리
+		SqlSession sqlSession = DataSource.getInstance().openSession(true);
 		BoardMapper mapper = sqlSession.getMapper(BoardMapper.class);
-		
-		BoardVO board = mapper.selectOne(Integer.parseInt(bno));
-		
-		req.setAttribute("board", board);
-		req.setAttribute("page", page);
-		
-		// http://localhost... /board.do -> jsp 출력 : 페이지 재지정
-		// board.jsp에 전달
-		req.getRequestDispatcher("/WEB-INF/views/board.jsp").forward(req, resp);
+		int r = mapper.deleteBoard(Integer.parseInt(bno));
+		// 정상처리시 목록이동
+		if (r > 0) {
+			System.out.println("삭제성공");
+		    resp.sendRedirect("boardList.do");
+		} else {
+			System.out.println("삭제오류");
+		}
 	} // end of exec()
 } // end of class

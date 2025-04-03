@@ -21,6 +21,7 @@ import com.yedam.control.LogoutControl;
 import com.yedam.control.MainControl;
 import com.yedam.control.ModifyBoardControl;
 import com.yedam.control.ModifyFormControl;
+import com.yedam.control.SignUpControl;
 
 // *.do의 요청에 실행
 public class FrontController extends HttpServlet{
@@ -34,7 +35,7 @@ public class FrontController extends HttpServlet{
 	//init
 	@Override
 	public void init(ServletConfig config) throws ServletException {
-		map.put("/main.do", new MainControl());
+		map.put("/main.do", new MainControl()); // 메인화면
 		
 		map.put("/board.do", new BoardControl()); // 상세화면
 		map.put("/boardList.do", new BoardListControl()); // 목록
@@ -45,8 +46,12 @@ public class FrontController extends HttpServlet{
 		map.put("/deleteBoard.do", new DeleteBoardControl()); // 삭제처리
 		// 로그인 관련
 		map.put("/loginForm.do", new LoginFormControl()); // 로그인 화면
-		map.put("/login.do", new LoginControl());
-		map.put("/logout.do", new LogoutControl());
+		map.put("/login.do", new LoginControl()); // 로그인처리
+		map.put("/logout.do", new LogoutControl()); // 로그아웃 
+		
+		// 회원가입
+		map.put("/signForm.do", new SignUpControl()); // 회원가입화면
+		map.put("/signUp.do", new SignUpControl()); // 회원등록
 	} // end of init()
 	
 	//service

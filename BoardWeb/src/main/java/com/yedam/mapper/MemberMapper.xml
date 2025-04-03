@@ -10,4 +10,8 @@
     WHERE user_id  = #{id}
       AND password = #{pw}
   </select>
+  <insert id="insertMember" parameterType="member">
+    INSERT into tbl_member (user_id, password, user_name, responsibility, images)
+    VALUES(#{userId}, #{password}, #{userName}, 'User', #{images})
+  </insert>
 </mapper>

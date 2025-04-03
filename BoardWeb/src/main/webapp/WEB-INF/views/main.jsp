@@ -2,11 +2,9 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<jsp:include page="includes/header.jsp"/>
 <table class="table">
   <tr>
-    <td>안녕하세요 ${empty userName ? 'userName' : 'guest' } !!</td>
-    <td>권한은 ${!empty logId ? responsibility == 'User' ? '일반사용자'} }</td>
+    <td>안녕하세요 ${!empty userName ? userName : 'guest' } !!</td>
+    <td>권한은 ${!empty logId ? responsibility == 'User' ? '일반사용자' : '관리자' : 'guest'}</td>
   </tr>
 </table>
-<jsp:include page="includes/footer.jsp"></jsp:include>

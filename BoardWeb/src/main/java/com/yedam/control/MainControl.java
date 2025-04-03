@@ -19,7 +19,7 @@ public class MainControl implements Control {
 		if(logId == null) {
 			resp.sendRedirect("loginForm.do");
 		} else {
-			req.getRequestDispatcher("/WEB-INF/views/main.jsp").forward(req, resp);
+			req.getRequestDispatcher("board/main.tiles").forward(req, resp);
 		}
-	} // end of exec
+	} // end of exec()
 } // end of class

@@ -17,6 +17,7 @@ public class SignUpControl implements Control {
 
 	@Override
 	public void exec(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		System.out.println("회원가입IP : " + req.getRemoteHost());
 		if(req.getMethod().equals("GET")) {
 			// 1. 회원가입화면 WEB-INF/views/signForm.jsp
 			req.getRequestDispatcher("member/signForm.tiles").forward(req, resp);			

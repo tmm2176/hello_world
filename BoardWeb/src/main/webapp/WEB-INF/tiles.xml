@@ -11,7 +11,11 @@
     <put-attribute name="footer" value="/WEB-INF/common/footer.jsp" />
   </definition>
   
-    <definition name="WILDCARD:product/*" extends="myapp.admin">
+  <definition name="WILDCARD:common/*" extends="myapp.common">
+    <put-attribute name="body" value="/WEB-INF/views/{1}.jsp" />
+  </definition>
+  
+  <definition name="WILDCARD:product/*" extends="myapp.admin">
     <put-attribute name="body" value="/WEB-INF/views/product/{1}.jsp" />
   </definition>
   
@@ -19,11 +23,7 @@
     <put-attribute name="body" value="/WEB-INF/views/board/{1}.jsp" />
   </definition>
   
-   <definition name="WILDCARD:common/*" extends="myapp.common">
-    <put-attribute name="body" value="/WEB-INF/views/{1}.jsp" />
-  </definition>
-  
-   <definition name="myapp.admin" template="/WEB-INF/admin/template.jsp">
+  <definition name="myapp.admin" template="/WEB-INF/admin/template.jsp">
     <put-attribute name="title" value="Tiles tutorial homepage" />
     <put-attribute name="body" value="/WEB-INF/admin/body.jsp" />
   </definition>
@@ -34,6 +34,11 @@
   
   <definition name="WILDCARD:manager/*" extends="myapp.admin">
     <put-attribute name="body" value="/WEB-INF/views/{1}.jsp" />
+  </definition>
+  
+  <!-- 기타 -->
+  <definition name="WILDCARD:*/*" extends="myapp.common">
+    <put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp" />
   </definition>
   
 </tiles-definitions>

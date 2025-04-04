@@ -47,7 +47,7 @@
    <ul class="pagination">
    <!-- 이전 10개 페이지가 있는지 확인 -->
    <c:choose>
-     <c:when test="${paging.prev} ">
+     <c:when test="${paging.prev}">
      <li class="page-item">
        <a class="page-link" href="boardList.do?page=${paging.startPage - 1 }">Previous</a>
      </li>
@@ -75,15 +75,15 @@
    </c:forEach>
      <!-- 이후 10개 페이지가 있는지 확인 -->
    <c:choose>
-     <c:when test="${paging.next} ">
-     <li class="page-item">
-       <a class="page-link" href="boardList.do?page=${paging.endPage + 1 }">Next</a>
-     </li>
+     <c:when test="${paging.next }">
+       <li class="page-item">
+         <a class="page-link" href="boardList.do?page=${paging.endPage + 1 }">Next</a>
+       </li>
      </c:when>
      <c:otherwise>
-     <li class="page-item disabled">
-       <span class="page-link">Next</span>
-     </li>      
+       <li class="page-item disabled">
+         <span class="page-link">Next</span>
+       </li>      
      </c:otherwise>
    </c:choose>
    </ul>

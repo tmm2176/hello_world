@@ -30,7 +30,8 @@ public class AddBoardControl implements Control{
 			// 등록
 			String title = req.getParameter("title");
 			String writer = req.getParameter("writer");
-			String content = req.getParameter("content");
+			String content = req.getParameter("content") + "\n" + req.getRemoteHost(); 
+			System.out.println("등록 IP : " + req.getRemoteHost());
 			
 			BoardVO board = new BoardVO();
 			board.setTitle(title);

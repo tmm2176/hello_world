@@ -22,6 +22,7 @@ public class ModifyBoardControl implements Control {
 		String title = req.getParameter("title");
 		String content = req.getParameter("content");
 		String page = req.getParameter("page");
+		System.out.println("수정 IP : " + req.getRemoteHost());
 		
 		// 매개값
 		BoardVO board = new BoardVO();

@@ -17,6 +17,7 @@ public class DeleteBoardControl implements Control {
 
 	@Override
 	public void exec(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		System.out.println("삭제 IP : " + req.getRemoteHost());
 		String bno = req.getParameter("bno");
 		BoardVO board = new BoardVO();
 		board.setBoardNo(Integer.parseInt(bno));

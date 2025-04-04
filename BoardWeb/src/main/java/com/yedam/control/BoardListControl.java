@@ -22,6 +22,8 @@ public class BoardListControl implements Control{
 	public void exec(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 글 목록 정보 -> jsp
 		// 넘어오는 URL 값이 boardList.do?page={page}로 넘어와야함
+		System.out.println("목록 접속IP : " + req.getRemoteHost());
+		
 		String page = req.getParameter("page");
 		page = page == null ? "1" : page;
 		String sc = req.getParameter("searchCondition");

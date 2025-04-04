@@ -8,13 +8,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.yedam.common.Control;
 
-public class LoginFormControl implements Control {
+public class JSControl implements Control {
 
 	@Override
 	public void exec(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 로그인 화면 open
-		// WEB-INF/views/loginForm.jsp
-		System.out.println("로그인 IP : " + req.getRemoteHost());
-		req.getRequestDispatcher("WEB-INF/views/member/loginForm.jsp").forward(req,  resp);
+		// /WEB-INF/views/etc/javaScript.jsp
+		req.getRequestDispatcher("etc/javaScript.tiles").forward(req, resp);
 	} // end of exec
 } // end of class

@@ -32,6 +32,7 @@ public class ModifyFormControl implements Control {
 		
 		req.setAttribute("board", board);
 		req.setAttribute("page", page);
+		System.out.println("수정 IP : " + req.getRemoteHost());
 		
 		if (logId != null && logId.equals(board.getWriter())) {
 			// 정상적으로 처리가 된 경우

@@ -3,10 +3,18 @@
  * XMLHttpRequest, fetch => 실행순서
  */
 
+let page = 1;
 
 // 함수표현식
 let successCallback = function successCallback(result) {
 	console.log(result);
+	// 기존목록 화면에서 지우기
+	document.querySelectorAll('div.reply div.content ul>li').forEach(function(item, idx) {
+		if (idx) { // truthy, falsy(0, null, '', undefined)
+			item.remove();
+		}
+	});
+	// 새로운 목록 출력
 	result.forEach(item => {
 		makeRow2(item);
 	});
@@ -15,6 +23,62 @@ let successCallback = function successCallback(result) {
 // 에러 콜백
 function errorCallback(err) {
 	console.log(err);
+}
+
+// 페이징 콜백
+function pagingCallback(result) {
+	// 페이지 목록 지우기
+	document.querySelector('nav>ul.pagination').innerHTML = "";
+	//console.log(result.totalCnt);
+	let totalCnt = result.totalCnt;
+	// 첫 페이지, 마지막 페이지 => 현재 페이지를 기준으로 계산\
+	let startPage, endPage;
+	// 이전페이지, 이후페이지
+	let prev, next;
+	endPage = Math.ceil(page / 10) * 10;
+	startPage = endPage - 9;
+	let realEnd = Math.ceil(totalCnt / 5);
+	endPage = endPage > realEnd ? realEnd : endPage;
+	prev = startPage == 1 ? false : true;
+	next = endPage < realEnd ? true : false;
+
+	let html1;
+	// 이전 페이지
+	if (!prev) {
+		html1 = `<li class="page-item disabled">`
+		html1 += `<span class="page-link">Previous</span></li>`		
+	} else {
+		html1 = `<li class="page-item">`
+		html1 += `<a class="page-link" data-page="${startPage - 1}">Previous</a></li>`
+	}
+	let target1 = document.querySelector('nav>ul.pagination')
+	target1.insertAdjacentHTML('beforeend', html1);
+	// 페이지 갯수
+	let html2;
+	for (let p = startPage; p <= endPage; p++) {
+		if (p == page) {
+			html2 = `<li class="page-item active" aria-current="page">
+				  <span class="page-link">${p}</span></li>`
+		} else {
+			html2 = `<li class="page-item"><a class="page-link" data-page="${p}">${p}</a></li>`
+		}
+		let target3 = document.querySelector('nav>ul.pagination')
+		target3.insertAdjacentHTML('beforeend', html2);
+	} // end of loop
+
+	// 이후 페이지
+	let html3;
+	if (!next) {
+		html3 = `<li class="page-item disabled">`
+		html3 += `<span class="page-link">Next</span></li>`
+	} else {
+		html3 = `<li class="page-item">`
+		html3 += `<a class="page-link" data-page="${endPage + 1}">Next</a></li>`
+	}
+	let target5 = document.querySelector('nav>ul.pagination')
+	target5.insertAdjacentHTML('beforeend', html3);
+	// 링크이벤트
+	pageLink(); // 요소가 만들어진 다음 이벤트를 걸어야 한다
 }
 
 // 삭제함수
@@ -30,6 +94,10 @@ function deleteFnc(rno = 21) {
 				alert("삭제성공!!");
 				// id 속성
 				document.querySelector('#rno_' + rno).remove();
+				// 댓글목록
+				svc.replyList({ bno, page }, successCallback, errorCallback);
+				// 페이징목록
+				svc.pagingList(bno, pagingCallback, errorCallback);
 			}
 		}
 		, errorCallback);
@@ -56,15 +124,36 @@ document.querySelector('button.addReply').addEventListener('click', function(e) 
 				alert('등록성공!');
 				let item = result.retVal; // 반환결과값 활용
 				makeRow2(item);
+				// 댓글목록
+				svc.replyList({ bno, page }, successCallback, errorCallback);
+				// 페이징목록
+				svc.pagingList(bno, pagingCallback, errorCallback);
 			} else {
 				alert('등록실패!');
 			}
 		}, errorCallback);
 })
 
-// 목록보여주기
-svc.replyList(bno, successCallback, errorCallback);
+// 페이지 링크 이벤트 등록
+function pageLink() {
+	document.querySelectorAll('div.reply ul a').forEach(function(atag) {
+		atag.addEventListener('click', function(e) {
+			e.preventDefault(); // 이벤트의 기본기능 차단
+			page = atag.dataset.page; // <a>3</a>
+			// 댓글목록
+			svc.replyList({ bno, page }, successCallback, errorCallback);
+			// 페이징목록
+			svc.pagingList(bno, pagingCallback, errorCallback);
+		})
+	});
+}
 
+// 목록보여주기
+svc.replyList({ bno, page }, successCallback, errorCallback);
+// 페이징 목록 보여주기
+svc.pagingList(bno, pagingCallback, errorCallback);
+
+// {bno:bno, page:page}처럼 같을 경우 위와 같이 한 번에 입력 가능
 // 함수선언식
 //function successCallback(result){
 //    console.log(result);

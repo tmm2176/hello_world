@@ -24,10 +24,12 @@
                   </choose>
                   ORDER BY board_no DESC) a) b
     <![CDATA[
-    WHERE b.rn >  (#{page} - 1) * 5
-    AND   b.rn <= (#{page} * 5)
     ]]>
-  </select>  
+  </select> 
+  <!-- 
+    WHERE b.rn >  (#{page} - 1) * 5
+    AND   b.rn <= (#{page} * 5)  
+   --> 
   <!-- 등록 -->
   <insert id = "insertBoard" parameterType="Board">
     insert into tbl_board(board_no, title, content, writer)

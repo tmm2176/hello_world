@@ -6,16 +6,21 @@
 <mapper namespace="com.yedam.mapper.ReplyMapper">
   
   <!-- 댓글목록 -->
-  <select id="selectList" resultType="reply" parameterType="int">
-    SELECT   reply_no,
-             reply,
-             replyer,
-             reply_date,
-             board_no
-    FROM     tbl_reply
-    WHERE    board_no = #{boardNo}
-    ORDER BY reply_no
+  <select id="selectList" resultType="reply" parameterType="search">
+    SELECT   b.reply_no,
+             b.reply,
+             b.replyer,
+             b.reply_date,
+             b.board_no
+    FROM    (SELECT /*+ INDEX_DESC(r reply_pk) */ rownum rn, r.*
+             FROM tbl_reply r
+             WHERE board_no = #{boardNo}) b
+    WHERE  b.rn  > (#{page} - 1) * 5
+    <![CDATA[
+      AND  b.rn  <= #{page} * 5
+    ]]>
   </select>
+
   <!-- 등록 -->
   <insert id="insertReply" parameterType="reply">
     <selectKey keyProperty="replyNo" resultType="int" order="BEFORE">
@@ -38,5 +43,19 @@
            board_no
     FROM   tbl_reply
     WHERE  board_no = #{boardNo}
+  </select>
+  
+  <!-- 댓글건수 -->
+  <select id="selectReplyCnt" resultType="int" parameterType="int">
+    SELECT count(1)
+    FROM   tbl_reply
+    WHERE  board_no = #{boardNo}
+  </select>
+  
+  <!-- Datatable용 -->
+  <select id="selectListForDT" resultType="map" parameterType="int">
+   SELECT /*+ INDEX_DESC(r reply_pk) */ r.*
+   FROM   tbl_reply r
+   WHERE  board_no = #{boardNo}
   </select>
 </mapper>

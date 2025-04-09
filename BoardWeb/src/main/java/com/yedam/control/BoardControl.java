@@ -32,6 +32,6 @@ public class BoardControl implements Control{
 		
 		// http://localhost... /board.do -> jsp 출력 : 페이지 재지정
 		// board.jsp에 전달
-		req.getRequestDispatcher("board/board.tiles").forward(req, resp);
+		req.getRequestDispatcher("board/board2.tiles").forward(req, resp);
 	} // end of exec()
 } // end of class

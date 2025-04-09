@@ -52,5 +52,7 @@
  </table>
  <!-- paging 처리 -->
 <script>
-  new DataTable('#example');
+  new DataTable('#example', {
+	    order: [[0, 'desc']]
+	});
 </script>

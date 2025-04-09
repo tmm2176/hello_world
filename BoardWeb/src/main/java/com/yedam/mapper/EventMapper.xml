@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.yedam.mapper.EventMapper">
+  <insert id="addEvent" parameterType="event">
+    INSERT into tbl_event (title, start_date, end_date)
+    VALUES(#{title}, #{startDate}, #{endDate})
+  </insert>
+  <delete id="removeEvent" parameterType="event">
+    DELETE FROM tbl_event
+    Where       title = #{title}
+      AND       start_date = #{start_date}
+  </delete>
+  <select id="eventList" resultType="event">
+    SELECT title,
+           start_date,
+           end_date
+    FROM  tbl_event
+  </select>
+</mapper>

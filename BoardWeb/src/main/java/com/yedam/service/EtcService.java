@@ -12,4 +12,8 @@ public interface EtcService {
 	public boolean removeEvent(EventVO event);
 	// 전체건수
 	public List<EventVO> eventList();
+	// 차트
+	List<Map<String, Object>> cntPerWriter();
+	// 로그생성
+	void logCreate(Map<String, String> map);
 } // end of interface

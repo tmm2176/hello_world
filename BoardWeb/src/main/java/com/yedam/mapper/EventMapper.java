@@ -14,4 +14,8 @@ public interface EventMapper {
 	int removeEvent(EventVO event);
 	// 전체건수
 	List<EventVO> eventList();
+	// 차트
+	List<Map<String, Object>> selectWriter();
+	// 로그
+	int insertLogging(Map<String, String> map);
 } // end of interface

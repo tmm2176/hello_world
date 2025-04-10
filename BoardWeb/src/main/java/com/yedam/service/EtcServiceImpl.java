@@ -1,6 +1,7 @@
 package com.yedam.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 
@@ -35,6 +36,12 @@ public class EtcServiceImpl implements EtcService{
     public List<EventVO> eventList() {
     	return mapper.eventList();
     }
-	
-
+	@Override
+	public List<Map<String, Object>> cntPerWriter() {
+		return mapper.selectWriter();
+	}
+	@Override
+	public void logCreate(Map<String, String> map) {
+		mapper.insertLogging(map);
+	}
 }

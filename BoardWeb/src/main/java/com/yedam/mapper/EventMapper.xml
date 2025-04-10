@@ -14,9 +14,23 @@
       AND       start_date = #{start_date}
   </delete>
   <select id="eventList" resultType="event">
-    SELECT title,
+    SELECT title as "title",
            start_date,
            end_date
     FROM  tbl_event
   </select>
+  <select id="selectWriter" resultType="map">
+    SELECT   user_name as "memberName",
+             b.writer as "writer",
+             count(1) as "cnt"
+    FROM     tbl_board b
+    join     tbl_member m
+    ON       b.writer = m.user_id
+    GROUP BY user_name, b.writer
+  </select>
+  <!-- 로그정보 생성 -->
+  <insert id="insertLogging" parameterType="map">
+    INSERT INTO tbl_logging(log_id, req_path, req_host)
+    VALUES      (loggin_seq.nextval, #{page}, #{host})
+  </insert>
 </mapper>

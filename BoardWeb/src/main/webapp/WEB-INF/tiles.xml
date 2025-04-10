@@ -15,6 +15,10 @@
     <put-attribute name="body" value="/WEB-INF/views/{1}.jsp" />
   </definition>
   
+    <definition name="WILDCARD:user/*" extends="myapp.common">
+    <put-attribute name="body" value="/WEB-INF/views/etc/{1}.jsp" />
+  </definition>
+  
   <definition name="WILDCARD:product/*" extends="myapp.admin">
     <put-attribute name="body" value="/WEB-INF/views/product/{1}.jsp" />
   </definition>

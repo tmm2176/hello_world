@@ -12,6 +12,8 @@ import com.yedam.common.Control;
 import com.yedam.common.DataSource;
 import com.yedam.mapper.BoardMapper;
 import com.yedam.mapper.EventMapper;
+import com.yedam.service.EtcService;
+import com.yedam.service.EtcServiceImpl;
 import com.yedam.vo.BoardVO;
 import com.yedam.vo.EventVO;
 
@@ -28,15 +30,12 @@ public class RemoveEventControl implements Control {
 		event.setEndDate(endDate);
 		
 		// 삭제처리
-		SqlSession sqlSession = DataSource.getInstance().openSession(true);
-		EventMapper mapper = sqlSession.getMapper(EventMapper.class);
-		int r = mapper.removeEvent(event);
+		EtcService svc = new EtcServiceImpl();
 		// 정상처리시 목록이동
-		if (r > 0) {
-			System.out.println("이벤트 삭제성공");
-		    resp.sendRedirect("eventForm.do");
+		if(svc.removeEvent(event)) {
+			resp.getWriter().print("{\"retCode\": \"OK\"}");// 요청재지정, 전달할 매개변수가 없을 경우 
 		} else {
-			System.out.println("이벤트 삭제실패");
+			resp.getWriter().print("{\"retCode\": \"NG\"}");
 		}
 	} // end of exec()
 } // end of class

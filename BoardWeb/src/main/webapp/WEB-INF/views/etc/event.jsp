@@ -55,7 +55,7 @@
                 },
                 body: 'title=' + title + '&startDate=' + start + '&endDate=' + end
               });
-              let r2 = await r1.json();
+              let r2 = await r1.json(); // json 문자열을 js객체로 변경
 
               if (r2.retCode == 'OK') {
                 //화면출력.
@@ -70,11 +70,12 @@
             } // end of if
             calendar.unselect()
           },
-          eventClick: function (arg) {
+          eventClick: async function (arg) {
             if (confirm('Are you sure you want to delete this event?')) {
-              let xhtp = fetch('removeEvent.do?title=' + arg.event.title + '&start=' + arg.event
-                .start + '&end=' + arg.event.end);
-              let result = xhtp.json();
+              let xhtp = await fetch('removeEvent.do?title=' + arg.event.title + '&startDate=' + arg.event
+                .startStr + '&endDate=' + arg.event.endStr);
+              let result = await xhtp.json();
+          	 //console.log(result);
               if (result.retCode == 'OK') {
                 arg.event.remove();
               } else {

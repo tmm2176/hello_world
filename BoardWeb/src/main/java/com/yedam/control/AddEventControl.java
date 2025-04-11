@@ -32,10 +32,9 @@ public class AddEventControl implements Control {
 		int r = mapper.addEvent(event);
 		
 		if(r > 0) {
-			System.out.println("이벤트 추가 완료");
-			resp.sendRedirect("eventForm.do"); // 요청재지정, 전달할 매개변수가 없을 경우 
+			resp.getWriter().print("{\"retCode\": \"OK\"}");// 요청재지정, 전달할 매개변수가 없을 경우 
 		} else {
-			System.out.println("등록을 실패했습니다");	
+			resp.getWriter().print("{\"retCode\": \"NG\"}");
 		}
 	} // end of exec()
 

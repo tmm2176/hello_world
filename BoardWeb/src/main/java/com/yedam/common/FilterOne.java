@@ -36,6 +36,7 @@ public class FilterOne implements Filter {
 		String uri = req.getRequestURI();
 		String context = req.getContextPath();
 		String reqPage = uri.substring(context.length());
+		//System.out.println("reqPage\n" + reqPage); //테스트용, 
 		
 		Map<String, String> map = new HashMap<>();
 		map.put("page", reqPage);

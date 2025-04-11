@@ -17,13 +17,14 @@ public class EventListControl implements Control {
 
 	@Override
 	public void exec(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		resp.setContentType("application/json;charset=utf-8");
+		resp.setCharacterEncoding("UTF-8");
 		EtcService service = new EtcServiceImpl();
 		List<EventVO> list = service.eventList();
 		
 		Gson gson = new Gson();
 		String json = gson.toJson(list);
 		try {
-			resp.setContentType("application/json;charset=utf-8");
 			resp.getWriter().print(json);
 		} catch (IOException e) {
 			e.printStackTrace();

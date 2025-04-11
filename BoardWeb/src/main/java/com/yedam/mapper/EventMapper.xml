@@ -11,7 +11,8 @@
   <delete id="removeEvent" parameterType="event">
     DELETE FROM tbl_event
     Where       title = #{title}
-      AND       start_date = #{start_date}
+      AND       start_date = #{startDate}
+      AND       end_date = #{endDate}
   </delete>
   <select id="eventList" resultType="event">
     SELECT title as "title",
